@@ -63,12 +63,12 @@ BEGIN {
                   shrink
                   max_depth
                 );
-                               
-                my $obj = $handler->new;                
+
+                my $obj = $handler->new;
                 for my $mutator (@params) {
                     next unless exists $self->{$mutator};
                     $obj = $obj->$mutator( $self->{$mutator} );
-                }                
+                }
                 $encoder = 'encode';
                 $decoder = 'decode';
                 return $obj;
@@ -90,14 +90,16 @@ sub import {
 
     ( $handler, $encoder, $decoder ) = ();
 
-    @order = split /\s/, $ENV{JSON_ANY_ORDER} unless @order;
+    if ( $ENV{JSON_ANY_ORDER} && !scalar @order ) {
+        @order = split /\s/, $ENV{JSON_ANY_ORDER};
+    }
     @order = qw(XS JSON DWIW Syck) unless @order;
 
     foreach my $testmod (@order) {
         $testmod = "JSON::$testmod" unless $testmod eq "JSON";
         eval "require $testmod";
         unless ($@) {
-            $handler = $testmod;            
+            $handler = $testmod;
             ( my $key = lc($handler) ) =~ s/::/_/g;
             $encoder = $conf{$key}->{encoder};
             $decoder = $conf{$key}->{decoder};
@@ -105,7 +107,7 @@ sub import {
         }
     }
 
-    croak "Couldn't find a JSON Package." unless $handler;
+    croak "Couldn't find a JSON Package."   unless $handler;
     croak "Couldn't find a decoder method." unless $decoder;
     croak "Couldn't find a encoder method." unless $encoder;
 }
@@ -193,12 +195,15 @@ to have the same name. This will be addressed in a future release.
 
 sub new {
     my $class = shift;
-    my $self  = bless [], $class;
+    my $self = bless [], $class;
     ( my $key = lc($handler) ) =~ s/::/_/g;
     if ( my $creator = $conf{$key}->{create_object} ) {
         my @config = @_;
-        push @config, map { split /=/, $_  } split /,\s*/, $ENV{JSON_ANY_CONFIG};
-        $self->[0] = $creator->({@config});
+        if ( $ENV{JSON_ANY_CONFIG} ) {
+            push @config, map { split /=/, $_ } split /,\s*/,
+              $ENV{JSON_ANY_CONFIG};
+        }
+        $self->[0] = $creator->( {@config} );
     }
     return $self;
 }
@@ -296,7 +301,7 @@ back into a hashref.
 
 sub jsonToObj {
     my $self = shift;
-    my $obj  = shift;    
+    my $obj  = shift;
     if ( ref $self ) {
         croak "No $handler Object created!" unless exists $self->[0];
         my $method = $self->[0]->can($decoder);

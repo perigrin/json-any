@@ -1,6 +1,6 @@
 #!perl -T
 use strict;
-use Test::More tests => 9;
+use Test::More no_plan => 9;
 
 BEGIN {
     use_ok('JSON::Any');
