@@ -6,8 +6,8 @@ eval "use JSON::Any qw(XS)";
 if ($@) {
     plan skip_all => "JSON::XS not installed: $@";
 }
-{
-    plan => 9;    # from outer space
+else {
+    plan tests => 8;
 }
 
 skip "JSON::XS not installed: $@", 1 if $@;
@@ -26,9 +26,9 @@ ok(
     )
 );
 is( $json->encode( chr 0x10402 ), '"\ud801\udc02"' );
+ok( $json = JSON::Any->new( allow_nonref => 1, utf8 => 1 ) );
 
 TODO: {
-    ok( $json = JSON::Any->new( allow_nonref => 1, utf8 => 1 ) );
 
     local $TODO = 'figure out why Ã¼ ne qq["\xc3\xbc\"]';
     is( $json->encode("Ã¼"), qq["\xc3\xbc\"] );

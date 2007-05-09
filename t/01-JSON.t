@@ -7,8 +7,8 @@ eval "use JSON::Any qw(PC JSON)";
 if ($@) {
     plan skip_all => "Neither JSON::PC nor JSON installed: $@";
 }
-{
-    plan => 5;
+else {
+    plan tests => 5;
 }
 
 diag("Testing JSON/JSON::PC backend");

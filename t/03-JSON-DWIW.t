@@ -6,8 +6,8 @@ eval "use JSON::Any qw(DWIW)";
 if ($@) {
     plan skip_all => "JSON::DWIW not installed: $@";
 }
-{
-    plan => 3;
+else {
+        plan tests => 2;
 }
 
 diag("Testing JSON::DWIW backend");
