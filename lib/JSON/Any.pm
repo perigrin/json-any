@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.05
+# v1.06
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -118,11 +118,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.05
+Version 1.06
 
 =cut
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 =head1 SYNOPSIS
 
@@ -336,6 +336,7 @@ underlying JSON module.
 =head1 AUTHOR
 
 Chris Thompson, C<< <cthom at cpan.org> >>
+Chris Prather, C<< <perigrin at cpan.org> >>
 
 =head1 BUGS
 
@@ -351,9 +352,7 @@ This module came about after discussions on irc.perl.org about the fact
 that there were now six separate JSON perl modules with different interfaces.
 
 In the spirit of Class::Any, JSON::Any was created with the considerable 
-help of Chris 'perigrin' Prather, and Matt 'mst' Trout.
-
-JSON::Any 1.01 was written almost entirely by Chris Prather.
+help of Matt 'mst' Trout.
 
 San Dimas High School Football Rules!
 
