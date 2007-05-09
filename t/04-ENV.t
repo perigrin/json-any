@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More skip_all => 0;
+use Test::More no_plan => 1;
 use JSON::Any;
 
 SKIP: {
