@@ -1,0 +1,5 @@
+Revision history for JSON-Any
+
+1.00    Fri Mar 23 10:24:50 EDT 2007
+        o Initial Release
+        o Currently only supports objToJson and jsonToObj

@@ -1,0 +1,44 @@
+t/00-load.........# Testing JSON::Any 1.00, Perl 5.008008, /opt/local/bin/perl
+
+#   Failed test 'JSON::Any->can(...)'
+#   at t/00-load.t line 12.
+#     JSON::Any->can('to_json') failed
+#     JSON::Any->can('from_json') failed
+
+#   Failed test 'JSON::Any->can(...)'
+#   at t/00-load.t line 13.
+#     JSON::Any->can('Dump') failed
+#     JSON::Any->can('Load') failed
+
+#   Failed test 'JSON::Any->can(...)'
+#   at t/00-load.t line 14.
+#     JSON::Any->can('encode') failed
+#     JSON::Any->can('decode') failed
+# Looks like you planned 4 tests but ran 2 extra.
+# Looks like you failed 3 tests of 6 run.
+dubious
+	Test returned status 3 (wstat 768, 0x300)
+DIED. FAILED tests 4-6
+	Failed 3/4 tests, 25.00% okay
+t/01-JSON.........# Testing JSON/JSON::PC backend, /opt/local/bin/perl
+ok
+t/02-JSON-XS......# Testing JSON::XS backend, /opt/local/bin/perl
+Can't locate object method "encode" via package "JSON::Any" at t/02-JSON-XS.t line 15.
+# Looks like you planned 9 tests but only ran 2.
+# Looks like your test died just after 2.
+dubious
+	Test returned status 255 (wstat 65280, 0xff00)
+DIED. FAILED tests 3-9
+	Failed 7/9 tests, 22.22% okay
+t/pod-coverage....skipped
+        all skipped: Test::Pod::Coverage 1.04 required for testing POD coverage
+t/pod.............skipped
+        all skipped: Test::Pod 1.14 required for testing POD
+Failed Test    Stat Wstat Total Fail  List of Failed
+-------------------------------------------------------------------------------
+t/00-load.t       3   768     4    5  4-6
+t/02-JSON-XS.t  255 65280     9   14  3-9
+2 tests skipped.
+Failed 2/5 test scripts. 8/20 subtests failed.
+Files=5, Tests=20,  0 wallclock secs ( 0.13 cusr +  0.05 csys =  0.18 CPU)
+Failed 2/5 test programs. 8/20 subtests failed.
