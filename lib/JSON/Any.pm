@@ -90,7 +90,8 @@ sub import {
 
     ( $handler, $encoder, $decoder ) = ();
 
-    if ( $ENV{JSON_ANY_ORDER} && !scalar @order ) {
+    if ( $ENV{JSON_ANY_ORDER} ) {
+        next if @order;
         @order = split /\s/, $ENV{JSON_ANY_ORDER};
     }
     @order = qw(XS JSON DWIW Syck) unless @order;

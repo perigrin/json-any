@@ -1,14 +1,14 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More no_plan => 0;
+use Test::More skip_all => 0;
+use JSON::Any;
 
 SKIP: {
     eval { require JSON; };
     skip "JSON not installed: $@", 1 if $@;
 
     $ENV{JSON_ANY_ORDER} = qw(JSON);
-    require JSON::Any;
     JSON::Any->import();
     skip "JSON not installed: $@", 1 if $@;
     is_deeply( $ENV{JSON_ANY_ORDER}, qw(JSON) );
