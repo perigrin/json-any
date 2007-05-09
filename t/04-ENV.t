@@ -3,12 +3,15 @@
 use strict;
 use Test::More no_plan => 0;
 
-BEGIN {
+SKIP: {
     $ENV{JSON_ANY_ORDER} = qw(JSON);
+    eval { require JSON; };
+    require JSON::Any;
+    JSON::Any->import();
+    skip "JSON not installed: $@", 1 if $@;
+    is_deeply( $ENV{JSON_ANY_ORDER}, qw(JSON) );
+    is( JSON::Any->handlerType, 'JSON' );
 }
-use JSON::Any;
-is_deeply( $ENV{JSON_ANY_ORDER}, qw(JSON) );
-is( JSON::Any->handlerType, 'JSON' );
 
 SKIP: {
     eval { require JSON::XS; };
