@@ -5,6 +5,8 @@ use inc::Module::Install;
 name 'JSON::Any';
 all_from 'lib/JSON/Any.pm';
 
+requires 'Carp' => '0';
+
 feature 'JSON',
   -default => 1,
   'JSON'   => '0';

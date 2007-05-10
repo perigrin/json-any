@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.06
+# v1.07
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -9,6 +9,18 @@ package JSON::Any;
 use warnings;
 use strict;
 use Carp;
+
+=head1 NAME
+
+JSON::Any - Wrapper Class for the various JSON classes.
+
+=head1 VERSION
+
+Version 1.07
+
+=cut
+
+our $VERSION = '1.07';
 
 my ( %conf, $handler, $encoder, $decoder );
 
@@ -112,18 +124,6 @@ sub import {
     croak "Couldn't find a decoder method." unless $decoder;
     croak "Couldn't find a encoder method." unless $encoder;
 }
-
-=head1 NAME
-
-JSON::Any - Wrapper Class for the various JSON classes.
-
-=head1 VERSION
-
-Version 1.06
-
-=cut
-
-our $VERSION = '1.06';
 
 =head1 SYNOPSIS
 
