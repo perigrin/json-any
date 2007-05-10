@@ -7,11 +7,14 @@ if ($@) {
     plan skip_all => "JSON::XS not installed: $@";
 }
 else {
-    plan tests => 8;
+    plan tests => 10;
 }
 
 skip "JSON::XS not installed: $@", 1 if $@;
 diag("Testing JSON::XS backend");
+
+is( JSON::Any->encode({foo=>'bar'}), qq[{"foo":"bar"}] );
+
 my ( $json, $js, $obj );
 ok( $json = JSON::Any->new( allow_nonref => 1 ) );
 is( $json->encode("Ã¼"), qq["Ã¼"] );
@@ -33,4 +36,6 @@ TODO: {
     local $TODO = 'figure out why Ã¼ ne qq["\xc3\xbc\"]';
     is( $json->encode("Ã¼"), qq["\xc3\xbc\"] );
 }
+
+is( JSON::Any->encode({foo=>'bar'}), qq[{"foo":"bar"}] );
 

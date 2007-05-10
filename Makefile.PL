@@ -2,7 +2,7 @@
 use inc::Module::Install;
 
 # Define metadata
-name 'JSON::Any';
+name 'JSON-Any';
 all_from 'lib/JSON/Any.pm';
 
 requires 'Carp' => '0';

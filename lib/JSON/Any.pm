@@ -20,17 +20,19 @@ Version 1.07
 
 =cut
 
-our $VERSION = '1.07';
+our $VERSION = '1.06_01';
 
 my ( %conf, $handler, $encoder, $decoder );
-
+use constant HANDLER => 0;
+use constant ENCODER => 1;
+use constant DECODER => 2;
 BEGIN {
     %conf = (
         json => {
             encoder       => 'objToJson',
             decoder       => 'jsonToObj',
             create_object => sub {
-                my ($self) = @_;
+                my ($self, $conf) = @_;
                 my @params = qw(
                   autoconv
                   skipinvalid
@@ -43,7 +45,9 @@ BEGIN {
                   selfconvert
                   singlequote
                 );
-                return $handler->new( map { $_ => $self->{$_} } @params );
+                $self->[ENCODER] = 'objToJson';
+                $self->[DECODER] = 'jsonToObj',
+                $self->[HANDLER] = $handler->new( map { $_ => $conf->{$_} } @params );
             },
         },
 
@@ -51,9 +55,11 @@ BEGIN {
             encoder       => 'to_json',
             decoder       => 'from_json',
             create_object => sub {
-                my ($self) = @_;
+                my ($self, $conf) = @_;
                 my @params = qw(bare_keys);
-                return $handler->new( { map { $_ => $self->{$_} } @params } );
+                $self->[ENCODER] = 'to_json';
+                $self->[DECODER] = 'from_json',                
+                $self->[HANDLER] = $handler->new( { map { $_ => $conf->{$_} } @params } );
             },
         },
 
@@ -61,7 +67,7 @@ BEGIN {
             encoder       => 'to_json',
             decoder       => 'from_json',
             create_object => sub {
-                my ($self) = @_;
+                my ($self, $conf) = @_;
 
                 my @params = qw(
                   ascii
@@ -78,12 +84,12 @@ BEGIN {
 
                 my $obj = $handler->new;
                 for my $mutator (@params) {
-                    next unless exists $self->{$mutator};
-                    $obj = $obj->$mutator( $self->{$mutator} );
+                    next unless exists $conf->{$mutator};
+                    $obj = $obj->$mutator( $conf->{$mutator} );
                 }
-                $encoder = 'encode';
-                $decoder = 'decode';
-                return $obj;
+                $self->[ENCODER] = 'encode';
+                $self->[DECODER] = 'decode',                
+                $self->[HANDLER] = $obj;
             },
         },
         json_syck => {
@@ -204,7 +210,7 @@ sub new {
             push @config, map { split /=/, $_ } split /,\s*/,
               $ENV{JSON_ANY_CONFIG};
         }
-        $self->[0] = $creator->( {@config} );
+        $creator->( $self, {@config} );
     }
     return $self;
 }
@@ -239,7 +245,7 @@ class methods.
 sub handler {
     my $self = shift;
     if ( ref $self ) {
-        return $self->[0];
+        return $self->[HANDLER];
     }
     return $handler;
 }
@@ -259,10 +265,10 @@ sub objToJson {
     my $self = shift;
     my $obj  = shift;
     if ( ref $self ) {
-        croak "No $handler Object created!" unless exists $self->[0];
-        my $method = $self->[0]->can($encoder);
+        croak "No $handler Object created!" unless exists $self->[HANDLER];
+        my $method = $self->[HANDLER]->can($self->[ENCODER]);
         croak "$handler can't execute $encoder" unless $method;
-        return $self->[0]->$method($obj);
+        return $self->[HANDLER]->$method($obj);
     }
     return $handler->can($encoder)->($obj);
 }
@@ -304,10 +310,10 @@ sub jsonToObj {
     my $self = shift;
     my $obj  = shift;
     if ( ref $self ) {
-        croak "No $handler Object created!" unless exists $self->[0];
-        my $method = $self->[0]->can($decoder);
+        croak "No $handler Object created!" unless exists $self->[HANDLER];
+        my $method = $self->[HANDLER]->can($self->[ENCODER]);
         croak "$handler can't execute $encoder" unless $method;
-        return $self->[0]->$method($obj);
+        return $self->[HANDLER]->$method($obj);
     }
     $handler->can($decoder)->($obj);
 }

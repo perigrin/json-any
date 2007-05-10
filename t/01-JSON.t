@@ -18,6 +18,7 @@ my ( $js, $obj );
 ok( my $json = JSON::Any->new( autoconv => 1 ) );
 $obj = { "id" => JSON::Number("1.02") };
 {
+    no warnings;
     local $JSON::AUTOCONVERT = 0;
     my $js = $json->objToJson($obj);
 
