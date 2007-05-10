@@ -1,16 +1,33 @@
-use strict;
-use warnings;
-use ExtUtils::MakeMaker;
+# Drop-in replacement to ExtUtils::MakeMaker
+use inc::Module::Install;
 
-WriteMakefile(
-    NAME                => 'JSON::Any',
-    AUTHOR              => 'Chris Thompson <cthom@cpan.org>',
-    VERSION_FROM        => 'lib/JSON/Any.pm',
-    ABSTRACT_FROM       => 'lib/JSON/Any.pm',
-    PL_FILES            => {},
-    PREREQ_PM => {
-        'Test::More' => 0,
-    },
-    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'JSON-Any-*' },
-);
+# Define metadata
+name 'JSON::Any';
+all_from 'lib/JSON/Any.pm';
+
+feature 'JSON',
+  -default => 1,
+  'JSON'   => '0';
+
+feature 'JSON::XS',
+  -default   => 0,
+  'JSON::XS' => '0';
+
+feature 'JSON::PC',
+  -default   => 0,
+  'JSON::PC' => '0';
+
+feature 'JSON::DWIW',
+  -default     => 0,
+  'JSON::DWIW' => '0';
+
+feature 'JSON::Syck',
+  -default     => 0,
+  'JSON::Syck' => '0';
+
+# Specific dependencies
+build_requires 'Test::More' => '0';
+no_index 'directory'        => 'ex';
+
+auto_install;
+WriteAll;
