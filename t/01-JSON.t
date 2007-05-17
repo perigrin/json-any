@@ -1,41 +1,71 @@
-#!perl -T
+#!perl
 $|++;
 use strict;
 use Test::More;
-
-eval "use JSON::Any qw(PC JSON)";
+eval "use JSON::Any qw(JSON)";
 if ($@) {
-    plan skip_all => "Neither JSON::PC nor JSON installed: $@";
+    plan skip_all => "JSON.pm not installed: $@";
 }
 else {
-    plan tests => 5;
+    plan tests => 15;
 }
 
-diag("Testing JSON/JSON::PC backend");
+diag("Testing JSON.pm backend");
 my ( $js, $obj );
 
-#1
-ok( my $json = JSON::Any->new( autoconv => 1 ) );
-$obj = { "id" => JSON::Number("1.02") };
-{
-    no warnings;
-    local $JSON::AUTOCONVERT = 0;
-    my $js = $json->objToJson($obj);
+ok(my $json_obj = JSON::Any->new());
+isa_ok($json_obj, 'JSON::Any');
+isa_ok($json_obj->handler, 'JSON');
 
-    #2
-    is( $js, '{"id":1.02}' );
-}
-$js = $json->objToJson($obj);
+$js  = q|{}|;
+$obj = $json_obj->jsonToObj($js);
+$js  = $json_obj->objToJson($obj);
+is($js,'{}');
 
-#3
-is( $js, '{"id":1.02}' );
+$js  = q|[]|;
+$obj = $json_obj->jsonToObj($js);
+$js  = $json_obj->objToJson($obj);
+is($js,'[]');
 
-$obj = { "id" => '0xfa' };
-$js = $json->objToJson($obj);
+$js  = q|{"foo":"bar"}|;
+$obj = $json_obj->jsonToObj($js);
+is($obj->{foo},'bar');
+$js = $json_obj->objToJson($obj);
+is($js,'{"foo":"bar"}');
 
-#4
-is( $js, '{"id":0xfa}' );
+$js  = q|{"foo":""}|;
+$obj = $json_obj->jsonToObj($js);
+$js = $json_obj->objToJson($obj);
+is($js,'{"foo":""}');
 
-#5
-ok( $json = JSON::Any->new( pretty => 1 ) );
+$js  = q|{"foo":" "}|;
+$obj = $json_obj->jsonToObj($js);
+$js = $json_obj->objToJson($obj);
+is($js,'{"foo":" "}');
 
+
+$js  = q|{}|;
+$obj = JSON::Any->jsonToObj($js);
+$js  = JSON::Any->objToJson($obj);
+is($js,'{}');
+
+$js  = q|[]|;
+$obj = JSON::Any->jsonToObj($js);
+$js  = JSON::Any->objToJson($obj);
+is($js,'[]');
+
+$js  = q|{"foo":"bar"}|;
+$obj = JSON::Any->jsonToObj($js);
+is($obj->{foo},'bar');
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":"bar"}');
+
+$js  = q|{"foo":""}|;
+$obj = JSON::Any->jsonToObj($js);
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":""}');
+
+$js  = q|{"foo":" "}|;
+$obj = JSON::Any->jsonToObj($js);
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":" "}');

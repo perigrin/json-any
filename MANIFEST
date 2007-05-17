@@ -20,5 +20,6 @@ t/01-JSON.t
 t/02-JSON-XS.t
 t/03-JSON-DWIW.t
 t/04-ENV.t
+t/kwalitee.t
 t/pod-coverage.t
 t/pod.t

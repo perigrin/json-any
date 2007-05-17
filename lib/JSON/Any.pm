@@ -20,7 +20,7 @@ Version 1.07
 
 =cut
 
-our $VERSION = '1.06_01';
+our $VERSION = '1.07';
 
 my ( %conf, $handler, $encoder, $decoder );
 use constant HANDLER => 0;
@@ -264,10 +264,11 @@ It returns the JSON text in a scalar.
 sub objToJson {
     my $self = shift;
     my $obj  = shift;
+    croak 'must provide object to convert' unless defined $obj;
     if ( ref $self ) {
         croak "No $handler Object created!" unless exists $self->[HANDLER];
         my $method = $self->[HANDLER]->can($self->[ENCODER]);
-        croak "$handler can't execute $encoder" unless $method;
+        croak "$handler can't execute $self->[ENCODER]" unless $method;
         return $self->[HANDLER]->$method($obj);
     }
     return $handler->can($encoder)->($obj);
@@ -309,10 +310,11 @@ back into a hashref.
 sub jsonToObj {
     my $self = shift;
     my $obj  = shift;
+        croak 'must provide json to convert' unless defined $obj;
     if ( ref $self ) {
         croak "No $handler Object created!" unless exists $self->[HANDLER];
-        my $method = $self->[HANDLER]->can($self->[ENCODER]);
-        croak "$handler can't execute $encoder" unless $method;
+        my $method = $self->[HANDLER]->can($self->[DECODER]);
+        croak "$handler can't execute $self->[DECODER]" unless $method;
         return $self->[HANDLER]->$method($obj);
     }
     $handler->can($decoder)->($obj);
