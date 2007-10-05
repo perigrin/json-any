@@ -1,12 +1,16 @@
 Revision history for JSON-Any
 
 1.09	???
+        o also test for is_utf8() - nothingmuch
+        o improve unicode test	- nothingmuch
+        o add utf8 support for JSON::{Converter,Parser}	- nothingmuch
+        o Add a test for unicode strings	- nothingmuch
 
-1.08	???
+1.08	18 May 2007
 
-1.07	
+		Fix Packaging
 
-1.06
+... History is Elusive ... 
 
 1.00    Fri Mar 23 10:24:50 EDT 2007
         o Initial Release
