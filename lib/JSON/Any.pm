@@ -310,11 +310,13 @@ sub jsonToObj {
     my $self = shift;
     my $obj  = shift;
         croak 'must provide json to convert' unless defined $obj;
+
+    utf8::encode($obj) if utf8::is_utf8($obj);
+
     if ( ref $self ) {
         croak "No $handler Object created!" unless exists $self->[HANDLER];
         my $method = $self->[HANDLER]->can($self->[DECODER]);
         croak "$handler can't execute $self->[DECODER]" unless $method;
-		utf8::encode($obj) if utf8::is_utf8($obj);
         return $self->[HANDLER]->$method($obj);
     }
     $handler->can($decoder)->($obj);
