@@ -26,13 +26,14 @@ my ( %conf, $handler, $encoder, $decoder );
 use constant HANDLER => 0;
 use constant ENCODER => 1;
 use constant DECODER => 2;
+
 BEGIN {
     %conf = (
         json => {
             encoder       => 'objToJson',
             decoder       => 'jsonToObj',
             create_object => sub {
-                my ($self, $conf) = @_;
+                my ( $self, $conf ) = @_;
                 my @params = qw(
                   autoconv
                   skipinvalid
@@ -44,11 +45,11 @@ BEGIN {
                   convblessed
                   selfconvert
                   singlequote
-				  utf8
+                  utf8
                 );
                 $self->[ENCODER] = 'objToJson';
-                $self->[DECODER] = 'jsonToObj',
-                $self->[HANDLER] = $handler->new( map { $_ => $conf->{$_} } @params );
+                $self->[DECODER] = 'jsonToObj', $self->[HANDLER] =
+                  $handler->new( map { $_ => $conf->{$_} } @params );
             },
         },
 
@@ -56,12 +57,12 @@ BEGIN {
             encoder       => 'to_json',
             decoder       => 'from_json',
             create_object => sub {
-                my ($self, $conf) = @_;
+                my ( $self, $conf ) = @_;
                 my @params = qw(bare_keys);
                 croak "JSON::DWIW does not support utf8" if $conf->{utf8};
                 $self->[ENCODER] = 'to_json';
-                $self->[DECODER] = 'from_json',                
-                $self->[HANDLER] = $handler->new( { map { $_ => $conf->{$_} } @params } );
+                $self->[DECODER] = 'from_json', $self->[HANDLER] =
+                  $handler->new( { map { $_ => $conf->{$_} } @params } );
             },
         },
 
@@ -69,7 +70,9 @@ BEGIN {
             encoder       => 'to_json',
             decoder       => 'from_json',
             create_object => sub {
-                my ($self, $conf) = @_;
+                require utf8;
+                utf8->import();
+                my ( $self, $conf ) = @_;
 
                 my @params = qw(
                   ascii
@@ -90,7 +93,12 @@ BEGIN {
                     $obj = $obj->$mutator( $conf->{$mutator} );
                 }
                 $self->[ENCODER] = 'encode';
-                $self->[DECODER] = 'decode',                
+                $self->[DECODER] = 'decode';
+                # $self->[DECODER] = sub {
+                #     my ( $handler, $json ) = @_;
+                #     utf8::encode($json) if utf8::is_utf8($obj);
+                #     $handler->decode($json);
+                # };
                 $self->[HANDLER] = $obj;
             },
         },
@@ -110,7 +118,8 @@ sub import {
 
     ( $handler, $encoder, $decoder ) = ();
 
-    @order = split /\s/, $ENV{JSON_ANY_ORDER} if !@order and $ENV{JSON_ANY_ORDER};
+    @order = split /\s/, $ENV{JSON_ANY_ORDER}
+      if !@order and $ENV{JSON_ANY_ORDER};
     @order = qw(XS JSON DWIW Syck) unless @order;
 
     foreach my $testmod (@order) {
@@ -265,9 +274,15 @@ sub objToJson {
     my $obj  = shift;
     croak 'must provide object to convert' unless defined $obj;
     if ( ref $self ) {
-        croak "No $handler Object created!" unless exists $self->[HANDLER];
-        my $method = $self->[HANDLER]->can($self->[ENCODER]);
-        croak "$handler can't execute $self->[ENCODER]" unless $method;
+        my $method;
+        unless ( ref $self->[ENCODER] ) {
+            croak "No $handler Object created!" unless exists $self->[HANDLER];
+            $method = $self->[HANDLER]->can( $self->[ENCODER] );
+            croak "$handler can't execute $self->[ENCODER]" unless $method;
+        }
+        else {
+            $method = $self->[ENCODER];
+        }
         return $self->[HANDLER]->$method($obj);
     }
     return $handler->can($encoder)->($obj);
@@ -309,14 +324,20 @@ back into a hashref.
 sub jsonToObj {
     my $self = shift;
     my $obj  = shift;
-        croak 'must provide json to convert' unless defined $obj;
+    croak 'must provide json to convert' unless defined $obj;
 
     utf8::encode($obj) if utf8::is_utf8($obj);
 
     if ( ref $self ) {
-        croak "No $handler Object created!" unless exists $self->[HANDLER];
-        my $method = $self->[HANDLER]->can($self->[DECODER]);
-        croak "$handler can't execute $self->[DECODER]" unless $method;
+        my $method;
+        unless ( ref $self->[DECODER] ) {
+            croak "No $handler Object created!" unless exists $self->[HANDLER];
+            $method = $self->[HANDLER]->can( $self->[DECODER] );
+            croak "$handler can't execute $self->[DECODER]" unless $method;
+        }
+        else {
+            $method = $self->[DECODER];
+        }
         return $self->[HANDLER]->$method($obj);
     }
     $handler->can($decoder)->($obj);
