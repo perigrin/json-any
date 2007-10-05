@@ -8,7 +8,27 @@ Revision history for JSON-Any
 
 1.08	18 May 2007
 
-		Fix Packaging
+        o Fix Packaging
+        o Fix JSON.pm backend tests 
+        o fix issues with JSON::XS being pedantic about how it's methods/functions are called
+        o added a carp requirement		
+
+1.07	???
+
+        o changed Makefile.PL to Module::Install
+        o helps if I test 04-ENV.t against the code it was designed for
+        o skip all 04-ENV.t until I get it working
+        o fixing tests
+        o change to skip_all based skippage
+        o add example directory
+        o pod updates
+
+1.06	???
+
+        o cleaned up t/04-ENV.t to not require JSON::XS anymore
+        o fixed split on uninitalized value error
+        o cleaned up JSON-XS tests a bit
+        o added 04-ENV.t to MANIFEST
 
 ... History is Elusive ... 
 
