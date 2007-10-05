@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.07
+Version 1.09
 
 =cut
 
-our $VERSION = '1.07';
+our $VERSION = '1.09';
 
 my ( %conf, $handler, $encoder, $decoder );
 use constant HANDLER => 0;
