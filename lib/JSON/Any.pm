@@ -58,6 +58,7 @@ BEGIN {
             create_object => sub {
                 my ($self, $conf) = @_;
                 my @params = qw(bare_keys);
+                croak "JSON::DWIW does not support utf8" if $conf->{utf8};
                 $self->[ENCODER] = 'to_json';
                 $self->[DECODER] = 'from_json',                
                 $self->[HANDLER] = $handler->new( { map { $_ => $conf->{$_} } @params } );
@@ -316,6 +317,7 @@ sub jsonToObj {
         croak "No $handler Object created!" unless exists $self->[HANDLER];
         my $method = $self->[HANDLER]->can($self->[DECODER]);
         croak "$handler can't execute $self->[DECODER]" unless $method;
+		utf8::encode($obj) if utf8::is_utf8($obj);
         return $self->[HANDLER]->$method($obj);
     }
     $handler->can($decoder)->($obj);
