@@ -6,15 +6,19 @@ use Test::More 'no_plan';
 
 use JSON::Any;
 
-foreach my $backend qw(XS JSON DWIW Syck) {
+$ENV{JSON_ANY_CONFIG} = "utf8=1";
+
+foreach my $backend qw(XS JSON DWIW Syck PC) {
 	my $j = eval {
 		JSON::Any->import($backend);
-		JSON::Any->new( utf8 => 1 );
-	} || next;
+		JSON::Any->new;
+	};
 
-	$j->handler or next;
+	diag $@ and next if $@;
 
-	diag "handler is " . ref($j->handler);
+	$j and $j->handler or next;
+
+	diag "handler is " . (ref($j->handler) || $j->handlerType);
 
 	foreach my $text qw(foo שלום) {
 
@@ -33,7 +37,7 @@ foreach my $backend qw(XS JSON DWIW Syck) {
 			$d->dump_info( $frozen );
 		};
 
-		is( !!utf8::is_utf8($thawed->[0]), !!scalar($text !~ /[a-z]/), "text is utf8 if input was" );
+		ok( utf8::is_utf8($thawed->[0]) || !scalar($text !~ /[a-z]/), "text is utf8 if it needs to be" );
 	}
 }
 
