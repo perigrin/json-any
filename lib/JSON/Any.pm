@@ -44,6 +44,7 @@ BEGIN {
                   convblessed
                   selfconvert
                   singlequote
+				  utf8
                 );
                 $self->[ENCODER] = 'objToJson';
                 $self->[DECODER] = 'jsonToObj',
