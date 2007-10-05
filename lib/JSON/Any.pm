@@ -110,11 +110,10 @@ sub import {
 
     ( $handler, $encoder, $decoder ) = ();
 
-    if ( $ENV{JSON_ANY_ORDER} ) {
-        next if @order;
-        @order = split /\s/, $ENV{JSON_ANY_ORDER};
+    unless ( @order ) {
+        @order = split /\s/, $ENV{JSON_ANY_ORDER} if $ENV{JSON_ANY_ORDER};
+        @order = qw(XS JSON DWIW Syck) unless @order;
     }
-    @order = qw(XS JSON DWIW Syck) unless @order;
 
     foreach my $testmod (@order) {
         $testmod = "JSON::$testmod" unless $testmod eq "JSON";
