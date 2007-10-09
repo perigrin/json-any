@@ -206,6 +206,15 @@ However these values don't map between JSON modules, so, from a portability
 standpoint this is really only helpful for those paramters that happen
 to have the same name. This will be addressed in a future release.
 
+The one parameter that is universally supported (to the extent that is
+supported by the underlying JSON modules) is C<utf8>. When this parameter is
+enabled all resulting JSON will be marked as unicode, and all unicode strings
+in the input data structure will be preserved as such.
+
+The actual output will vary, for example L<JSON> will encode and decode unicode
+chars (the resulting JSON is not unicode) wheras L<JSON::XS> will emit unicode
+JSON.
+
 =back
 
 =cut
