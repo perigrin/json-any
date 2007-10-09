@@ -303,12 +303,9 @@ underlying JSON module.
 
 =cut
 
-{
-    no strict "refs";
-    *to_json = \&objToJson;
-    *Dump    = \&objToJson;
-    *encode  = \&objToJson;
-}
+*to_json = \&objToJson;
+*Dump    = \&objToJson;
+*encode  = \&objToJson;
 
 =over
 
@@ -358,12 +355,9 @@ underlying JSON module.
 
 =cut
 
-{
-    no strict "refs";
-    *from_json = \&jsonToObj;
-    *Load      = \&jsonToObj;
-    *decode    = \&jsonToObj;
-}
+*from_json = \&jsonToObj;
+*Load      = \&jsonToObj;
+*decode    = \&jsonToObj;
 
 =head1 AUTHOR
 
