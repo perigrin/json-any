@@ -22,10 +22,13 @@ Version 1.09
 
 our $VERSION = '1.09';
 
+our $UTF8;
+
 my ( %conf, $handler, $encoder, $decoder );
 use constant HANDLER => 0;
 use constant ENCODER => 1;
 use constant DECODER => 2;
+use constant UTF8    => 3;
 
 BEGIN {
     %conf = (
@@ -48,8 +51,8 @@ BEGIN {
                   utf8
                 );
                 $self->[ENCODER] = 'objToJson';
-                $self->[DECODER] = 'jsonToObj', $self->[HANDLER] =
-                  $handler->new( map { $_ => $conf->{$_} } @params );
+                $self->[DECODER] = 'jsonToObj';
+                $self->[HANDLER] = $handler->new( map { $_ => $conf->{$_} } @params );
             },
         },
 
@@ -61,8 +64,8 @@ BEGIN {
                 my @params = qw(bare_keys);
                 croak "JSON::DWIW does not support utf8" if $conf->{utf8};
                 $self->[ENCODER] = 'to_json';
-                $self->[DECODER] = 'from_json', $self->[HANDLER] =
-                  $handler->new( { map { $_ => $conf->{$_} } @params } );
+                $self->[DECODER] = 'from_json';
+                $self->[HANDLER] = $handler->new( { map { $_ => $conf->{$_} } @params } );
             },
         },
 
@@ -93,12 +96,11 @@ BEGIN {
                     $obj = $obj->$mutator( $conf->{$mutator} );
                 }
                 $self->[ENCODER] = 'encode';
-                $self->[DECODER] = 'decode';
-                # $self->[DECODER] = sub {
-                #     my ( $handler, $json ) = @_;
-                #     utf8::encode($json) if utf8::is_utf8($obj);
-                #     $handler->decode($json);
-                # };
+                $self->[DECODER] = sub {
+                    my ( $handler, $json ) = @_;
+                    utf8::encode($json) if utf8::is_utf8($json);
+                    $handler->decode($json);
+                };
                 $self->[HANDLER] = $obj;
             },
         },
@@ -218,7 +220,8 @@ sub new {
             push @config, map { split /=/, $_ } split /,\s*/,
               $ENV{JSON_ANY_CONFIG};
         }
-        $creator->( $self, {@config} );
+        $creator->( $self, my $conf = {@config} );
+        $self->[UTF8] = $conf->{utf8};
     }
     return $self;
 }
@@ -273,6 +276,9 @@ sub objToJson {
     my $self = shift;
     my $obj  = shift;
     croak 'must provide object to convert' unless defined $obj;
+
+    my $json;
+
     if ( ref $self ) {
         my $method;
         unless ( ref $self->[ENCODER] ) {
@@ -283,9 +289,13 @@ sub objToJson {
         else {
             $method = $self->[ENCODER];
         }
-        return $self->[HANDLER]->$method($obj);
+        $json = $self->[HANDLER]->$method($obj);
+    } else {
+        $json = $handler->can($encoder)->($obj);
     }
-    return $handler->can($encoder)->($obj);
+
+    utf8::decode($json) if (ref $self ? $self->[UTF8] : $UTF8 ) and !utf8::is_utf8($json) and utf8::valid($json);
+    return $json;
 }
 
 =over
@@ -322,8 +332,6 @@ sub jsonToObj {
     my $self = shift;
     my $obj  = shift;
     croak 'must provide json to convert' unless defined $obj;
-
-    utf8::encode($obj) if utf8::is_utf8($obj);
 
     if ( ref $self ) {
         my $method;

@@ -27,6 +27,8 @@ foreach my $backend qw(XS JSON DWIW Syck PC) {
         my $frozen = $j->encode( $struct );
         my $thawed = $j->decode( $frozen );
 
+        ok( utf8::is_utf8($frozen) || !scalar($frozen !~ /[\w\d[:punct:]]/), "json output is utf8");
+
         is_deeply( $thawed, $struct, "deeply" );
 
         is( $thawed->[0], $text, "text is the same" ) || eval {
