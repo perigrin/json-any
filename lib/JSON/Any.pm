@@ -90,17 +90,15 @@ BEGIN {
                   max_depth
                 );
 
+                local $conf->{utf8} = !$conf->{utf8}; # it means the opposite
+
                 my $obj = $handler->new;
                 for my $mutator (@params) {
                     next unless exists $conf->{$mutator};
                     $obj = $obj->$mutator( $conf->{$mutator} );
                 }
                 $self->[ENCODER] = 'encode';
-                $self->[DECODER] = sub {
-                    my ( $handler, $json ) = @_;
-                    utf8::encode($json) if utf8::is_utf8($json);
-                    $handler->decode($json);
-                };
+                $self->[DECODER] = 'decode';
                 $self->[HANDLER] = $obj;
             },
         },
