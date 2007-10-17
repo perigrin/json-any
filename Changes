@@ -1,6 +1,12 @@
 Revision history for JSON-Any
 
-1.09	???
+1.11	17 Oct 2007
+        o fix issue with JSON::Syck when using Object API as reported by Miyagawa
+
+1.10	12 Oct 2007
+        o fix issues from http://rt.cpan.org/Public/Bug/Display.html?id=29917
+
+1.09	10 Oct 2007
         o also test for is_utf8() - nothingmuch
         o improve unicode test	- nothingmuch
         o add utf8 support for JSON::{Converter,Parser}	- nothingmuch

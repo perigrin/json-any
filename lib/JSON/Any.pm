@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.09
+# v1.10
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.09
+Version 1.10
 
 =cut
 
-our $VERSION = '1.09';
+our $VERSION = '1.10';
 
 our $UTF8;
 
@@ -52,7 +52,8 @@ BEGIN {
                 );
                 $self->[ENCODER] = 'objToJson';
                 $self->[DECODER] = 'jsonToObj';
-                $self->[HANDLER] = $handler->new( map { $_ => $conf->{$_} } @params );
+                $self->[HANDLER] =
+                  $handler->new( map { $_ => $conf->{$_} } @params );
             },
         },
 
@@ -65,7 +66,8 @@ BEGIN {
                 croak "JSON::DWIW does not support utf8" if $conf->{utf8};
                 $self->[ENCODER] = 'to_json';
                 $self->[DECODER] = 'from_json';
-                $self->[HANDLER] = $handler->new( { map { $_ => $conf->{$_} } @params } );
+                $self->[HANDLER] =
+                  $handler->new( { map { $_ => $conf->{$_} } @params } );
             },
         },
 
@@ -90,7 +92,7 @@ BEGIN {
                   max_depth
                 );
 
-                local $conf->{utf8} = !$conf->{utf8}; # it means the opposite
+                local $conf->{utf8} = !$conf->{utf8};    # it means the opposite
 
                 my $obj = $handler->new;
                 for my $mutator (@params) {
@@ -103,8 +105,14 @@ BEGIN {
             },
         },
         json_syck => {
-            encoder => 'Dump',
-            decoder => 'Load',
+            encoder       => 'Dump',
+            decoder       => 'Load',
+            create_object => sub {
+                my ($self) = shift;
+                $self->[ENCODER] = sub { Dump(@_) };
+                $self->[DECODER] = sub { Load(@_) };
+                $self->[HANDLER] = 'JSON::Syck';
+              }
         },
     );
 
@@ -297,11 +305,15 @@ sub objToJson {
             $method = $self->[ENCODER];
         }
         $json = $self->[HANDLER]->$method($obj);
-    } else {
+    }
+    else {
         $json = $handler->can($encoder)->($obj);
     }
 
-    utf8::decode($json) if (ref $self ? $self->[UTF8] : $UTF8 ) and !utf8::is_utf8($json) and utf8::valid($json);
+    utf8::decode($json)
+      if ( ref $self ? $self->[UTF8] : $UTF8 )
+      and !utf8::is_utf8($json)
+      and utf8::valid($json);
     return $json;
 }
 
