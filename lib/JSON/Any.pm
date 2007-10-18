@@ -108,7 +108,8 @@ BEGIN {
             encoder       => 'Dump',
             decoder       => 'Load',
             create_object => sub {
-                my ($self) = shift;
+                my ( $self, $conf ) = @_;
+                croak "JSON::Syck does not support utf8" if $conf->{utf8};
                 $self->[ENCODER] = sub { Dump(@_) };
                 $self->[DECODER] = sub { Load(@_) };
                 $self->[HANDLER] = 'JSON::Syck';

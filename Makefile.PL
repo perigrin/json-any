@@ -1,4 +1,5 @@
 # Drop-in replacement to ExtUtils::MakeMaker
+use 5.8.3;
 use inc::Module::Install;
 
 # Define metadata
