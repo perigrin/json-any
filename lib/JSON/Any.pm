@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.10
+# v1.11
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.10
+Version 1.11
 
 =cut
 
-our $VERSION = '1.10';
+our $VERSION = '1.11';
 
 our $UTF8;
 
