@@ -32,5 +32,10 @@ feature 'JSON::Syck',
 build_requires 'Test::More' => '0';
 no_index 'directory'        => 'ex';
 
+if ( $ENV{BUILD_STANDARD_TESTS} ) {
+    use_test_base;
+    use_standard_tests;
+}
+
 auto_install;
 WriteAll;
