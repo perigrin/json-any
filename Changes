@@ -1,7 +1,10 @@
 Revision history for JSON-Any
+1.14	???
+		* Fix for the new JSON/JSON::XS 2.0
+		*** THIS UPGRADE WILL ONLY WORK ON 2.0+ VERSIONS OF THESE MODULES ***
 1.13	2007-11-06
 		* Fix 10_unicode.t to skip_all if no supported unicode backend is found
-		 (reported by Andreas KÃ¶nig)
+		 (reported by Andreas König)
 
 1.12	2007-10-22
 		* Fix issue with 05-JSON-Syck.t so we can pass our tests again

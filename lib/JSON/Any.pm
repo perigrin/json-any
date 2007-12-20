@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.12
+# v1.13
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.12
+Version 1.13
 
 =cut
 
-our $VERSION = '1.12';
+our $VERSION = '1.13';
 
 our $UTF8;
 
@@ -33,9 +33,12 @@ use constant UTF8    => 3;
 BEGIN {
     %conf = (
         json => {
-            encoder       => 'objToJson',
-            decoder       => 'jsonToObj',
+            encoder       => 'encode_json',
+            decoder       => 'decode_json',
             create_object => sub {
+                require utf8;
+                utf8->import();
+                
                 my ( $self, $conf ) = @_;
                 my @params = qw(
                   autoconv
@@ -50,10 +53,16 @@ BEGIN {
                   singlequote
                   utf8
                 );
-                $self->[ENCODER] = 'objToJson';
-                $self->[DECODER] = 'jsonToObj';
-                $self->[HANDLER] =
-                  $handler->new( map { $_ => $conf->{$_} } @params );
+                                local $conf->{utf8} = !$conf->{utf8};    # it means the opposite
+                my $obj = $handler->new;
+                for my $mutator (@params) {
+                    next unless exists $conf->{$mutator};
+                    $obj = $obj->$mutator( $conf->{$mutator} );
+                }
+                
+                $self->[ENCODER] = 'encode';
+                $self->[DECODER] = 'decode';
+                $self->[HANDLER] = $obj;
             },
         },
 
@@ -72,8 +81,8 @@ BEGIN {
         },
 
         json_xs => {
-            encoder       => 'to_json',
-            decoder       => 'from_json',
+            encoder       => 'encode_json',
+            decoder       => 'decode_json',
             create_object => sub {
                 require utf8;
                 utf8->import();
