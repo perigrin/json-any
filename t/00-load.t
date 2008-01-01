@@ -3,17 +3,21 @@
 use Test::More;
 
 BEGIN {
-    eval "use JSON::Any";
 
-    if ($@) {
-        plan skip_all => "$@";
+    # Count who's installed
+    my @order = qw(JSON::XS JSON JSON::DWIW JSON::Syck);
+    my $count = scalar grep { eval "require $_"; not $@; } @order;
+
+    unless ($count) {    # need at least one
+        plan skip_all => "Can't find a JSON package.";
         exit;
     }
-    else {
-        plan tests => 7;
-    }
+
+    # if we're here we have *something* that will work
+    plan tests => 7;
+    use_ok('JSON::Any');
 }
-pass('use JSON::Any;');
+
 diag("Testing JSON::Any $JSON::Any::VERSION, Perl $], $^X");
 can_ok( JSON::Any, qw(new) );
 can_ok( JSON::Any, qw(objToJson jsonToObj) );
