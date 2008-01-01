@@ -1,8 +1,15 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More no_plan => 1;
-use JSON::Any;
+use Test::More;
+eval "use JSON::Any";
+
+if ($@) {
+    plan skip_all => "$@";
+}
+else {
+    plan no_plan => 1;
+}
 
 SKIP: {
     eval { require JSON; };
@@ -26,7 +33,7 @@ SKIP: {
 
     my ($json);
     ok( $json = JSON::Any->new() );
-    eval { $json->encode("Ã¼") };
+    eval { $json->encode("�") };
     ok( $@, 'trapped a failure' );
     undef $@;
     $ENV{JSON_ANY_CONFIG} = 'allow_nonref=1';
