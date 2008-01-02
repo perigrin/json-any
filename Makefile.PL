@@ -10,7 +10,7 @@ requires 'Carp' => '0';
 
 feature 'JSON',
   -default => 1,
-  'JSON'   => '2.01';
+  'JSON'   => '2.02';
 
 feature 'JSON::XS',
   -default   => 0,

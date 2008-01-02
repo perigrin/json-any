@@ -1,6 +1,6 @@
 ##############################################################################
 # JSON::Any
-# v1.14
+# v1.15
 # Copyright (c) 2007 Chris Thompson
 ##############################################################################
 
@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.14
+Version 1.15
 
 =cut
 
-our $VERSION = '1.14';
+our $VERSION = '1.15';
 
 our $UTF8;
 
@@ -38,28 +38,41 @@ BEGIN {
             create_object => sub {
                 require utf8;
                 utf8->import();
-                
+                JSON->import( '-support_by_pp', '-no_export' );
                 my ( $self, $conf ) = @_;
                 my @params = qw(
-                  autoconv
-                  skipinvalid
-                  execcoderef
+                  ascii
+                  latin1
+                  utf8
                   pretty
                   indent
-                  delimiter
-                  keysort
-                  convblessed
-                  selfconvert
-                  singlequote
-                  utf8
+                  space_before
+                  space_after
+                  relaxed
+                  canonical
+                  allow_nonref
+                  allow_blessed
+                  convert_blessed
+                  filter_json_object
+                  shrink
+                  max_depth
+                  max_size
+                  loose
+                  allow_bignum
+                  allow_barekey
+                  allow_singlequote
+                  escape_slash
+                  indent_length
+                  sort_by
                 );
-                                local $conf->{utf8} = !$conf->{utf8};    # it means the opposite
+                local $conf->{utf8} = !$conf->{utf8};    # it means the opposite
                 my $obj = $handler->new;
+
                 for my $mutator (@params) {
                     next unless exists $conf->{$mutator};
                     $obj = $obj->$mutator( $conf->{$mutator} );
                 }
-                
+
                 $self->[ENCODER] = 'encode';
                 $self->[DECODER] = 'decode';
                 $self->[HANDLER] = $obj;
@@ -90,15 +103,21 @@ BEGIN {
 
                 my @params = qw(
                   ascii
+                  latin1
                   utf8
                   pretty
                   indent
                   space_before
                   space_after
+                  relaxed
                   canonical
                   allow_nonref
+                  allow_blessed
+                  convert_blessed
+                  filter_json_object
                   shrink
                   max_depth
+                  max_size
                 );
 
                 local $conf->{utf8} = !$conf->{utf8};    # it means the opposite
