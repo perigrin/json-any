@@ -3,10 +3,11 @@ Revision history for JSON-Any
 		* Update the config params for JSON and JSON/XS configuration
 		* Update JSON handler to always pass in the -support_by_pp option 
 		  if you don't want support_by_pp then don't use JSON.pm ... 
-
+		*** THIS VERSION WILL ONLY WORK ON 2.0+ VERSIONS OF THESE MODULES ***
+		
 1.14	2007-12-20
 		* Fix for the new JSON/JSON::XS 2.0
-		*** THIS UPGRADE WILL ONLY WORK ON 2.0+ VERSIONS OF THESE MODULES ***
+		*** THIS VERSION WILL ONLY WORK ON 2.0+ VERSIONS OF THESE MODULES ***
 
 1.13	2007-11-06
 		* Fix 10_unicode.t to skip_all if no supported unicode backend is found
