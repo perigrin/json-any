@@ -11,4 +11,4 @@ else {
 }
 
 ok( JSON::Any->new->objToJson( { foo => 1 } ) );
-ok( JSON::Any->new->objToJson('{ "foo" : 1 }') );
+ok( JSON::Any->new->jsonToObj('{ "foo" : 1 }') );
