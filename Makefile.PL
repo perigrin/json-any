@@ -8,13 +8,28 @@ all_from 'lib/JSON/Any.pm';
 
 requires 'Carp' => '0';
 
-feature 'JSON',
-  -default => 1,
-  'JSON'   => '2.02';
+sub has_json () {
+    @order = qw(XS JSON DWIW Syck);
+    foreach my $testmod (@order) {
+        $testmod = "JSON::$testmod" unless $testmod eq "JSON";
+        eval "require $testmod";
+        return 1 unless $@;
+    }
+    return 0;
+}
+
+unless (has_json) {
+    requires 'JSON' => '2.02';
+}
+else {
+    feature 'JSON',
+      -default => 0,
+      'JSON'   => '2.02';
+}
 
 feature 'JSON::XS',
   -default   => 0,
-  'JSON::XS' => '2.01';
+  'JSON::XS' => '0';
 
 feature 'JSON::PC',
   -default   => 0,

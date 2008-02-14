@@ -78,7 +78,6 @@ BEGIN {
                 $self->[HANDLER] = $obj;
             },
         },
-
         json_dwiw => {
             encoder       => 'to_json',
             decoder       => 'from_json',
@@ -92,8 +91,36 @@ BEGIN {
                   $handler->new( { map { $_ => $conf->{$_} } @params } );
             },
         },
+        json_xs_1 => {
+            encoder       => 'to_json',
+            decoder       => 'from_json',
+            create_object => sub {
+                my ( $self, $conf ) = @_;
 
-        json_xs => {
+                my @params = qw(
+                  ascii
+                  utf8
+                  pretty
+                  indent
+                  space_before
+                  space_after
+                  canonical
+                  allow_nonref
+                  shrink
+                  max_depth
+                );
+
+                my $obj = $handler->new;
+                for my $mutator (@params) {
+                    next unless exists $conf->{$mutator};
+                    $obj = $obj->$mutator( $conf->{$mutator} );
+                }
+                $self->[ENCODER] = 'encode';
+                $self->[DECODER] = 'decode';
+                $self->[HANDLER] = $obj;
+            },
+        },
+        json_xs_2 => {
             encoder       => 'encode_json',
             decoder       => 'decode_json',
             create_object => sub {
@@ -149,6 +176,16 @@ BEGIN {
     $conf{json_pc} = $conf{json};
 }
 
+sub _make_key {
+    my $handler = shift;
+    ( my $key = lc($handler) ) =~ s/::/_/g;
+    if ( 'json_xs' eq $key ) {
+        no strict 'refs';
+        $key .= "_" . ( split /\./, ${"$handler\::VERSION"} )[0];
+    }
+    return $key;
+}
+
 sub import {
     my $class = shift;
     my @order = @_;
@@ -164,7 +201,7 @@ sub import {
         eval "require $testmod";
         unless ($@) {
             $handler = $testmod;
-            ( my $key = lc($handler) ) =~ s/::/_/g;
+            my $key = _make_key($handler);
             $encoder = $conf{$key}->{encoder};
             $decoder = $conf{$key}->{decoder};
             last;
@@ -230,6 +267,12 @@ Specifying an order that is missing one of the modules will prevent that module 
 This will check in that order, and will never attempt to load JSON::Syck. This can also be set via
 the $ENV{JSON_ANY_ORDER} environment variable.
 
+WARNING: If you call JSON::Any with an empty list
+
+    use JSON::Any ();
+    
+It will skip the JSON package detection routines and will die loudly that it couldn't find a package.
+
 =head1 FUNCTIONS
 
 =over
@@ -256,8 +299,8 @@ JSON.
 
 sub new {
     my $class = shift;
-    my $self = bless [], $class;
-    ( my $key = lc($handler) ) =~ s/::/_/g;
+    my $self  = bless [], $class;
+    my $key   = _make_key($handler);
     if ( my $creator = $conf{$key}->{create_object} ) {
         my @config = @_;
         if ( $ENV{JSON_ANY_CONFIG} ) {
@@ -435,6 +478,9 @@ that there were now six separate JSON perl modules with different interfaces.
 
 In the spirit of Class::Any, JSON::Any was created with the considerable 
 help of Matt 'mst' Trout.
+
+Simon Wistow graciously supplied a patch for backwards compat with JSON::XS 
+versions previous to 2.01
 
 San Dimas High School Football Rules!
 

@@ -1,4 +1,9 @@
 Revision history for JSON-Any
+1.16    2008-02-13
+        * JSON::Any now compatible with both versions of JSON::XS  (Simon Wistow)
+        * Document that calling 'use JSON::Any ();' is a bad idea
+        * Make JSON.pm required unless a supported JSON package is already installed
+        
 1.15	2008-01-02
 		* Update the config params for JSON and JSON/XS configuration
 		* Update JSON handler to always pass in the -support_by_pp option 
