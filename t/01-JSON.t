@@ -7,7 +7,7 @@ if ($@) {
     plan skip_all => "JSON.pm not installed: $@";
 }
 else {
-    plan tests => 15;
+    plan tests => 19;
 }
 
 diag("Testing JSON.pm backend");
@@ -69,3 +69,20 @@ $js  = q|{"foo":" "}|;
 $obj = JSON::Any->jsonToObj($js);
 $js = JSON::Any->objToJson($obj);
 is($js,'{"foo":" "}');
+
+# testing the truth
+$obj = { foo => JSON::Any->true };
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":true}');
+
+$obj = { foo => JSON::Any->false };
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":false}');
+
+$obj = { foo => $json_obj->true };
+$js = $json_obj->objToJson($obj);
+is($js,'{"foo":true}');
+
+$obj = { foo => $json_obj->false };
+$js = $json_obj->objToJson($obj);
+is($js,'{"foo":false}');

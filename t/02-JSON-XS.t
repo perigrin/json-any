@@ -9,7 +9,7 @@ if ($@) {
     plan skip_all => "JSON::XS not installed: $@";
 }
 else {
-    plan tests => 20;
+    plan tests => 24;
 }
 
 skip "JSON::XS not installed: $@", 1 if $@;
@@ -52,3 +52,19 @@ is( $json->encode("Ã¼"), qq["\xc3\xbc\"] );
 
 is( JSON::Any->encode({foo=>'bar'}), qq[{"foo":"bar"}] );
 
+# testing the truth
+$obj = { foo => JSON::Any->true };
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":true}');
+
+$obj = { foo => JSON::Any->false };
+$js = JSON::Any->objToJson($obj);
+is($js,'{"foo":false}');
+
+$obj = { foo => $json->true };
+$js = $json->objToJson($obj);
+is($js,'{"foo":true}');
+
+$obj = { foo => $json->false };
+$js = $json->objToJson($obj);
+is($js,'{"foo":false}');

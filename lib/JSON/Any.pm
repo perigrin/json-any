@@ -35,6 +35,8 @@ BEGIN {
         json => {
             encoder       => 'encode_json',
             decoder       => 'decode_json',
+            get_true      => sub { return JSON::true(); },
+            get_false     => sub { return JSON::false(); },
             create_object => sub {
                 require utf8;
                 utf8->import();
@@ -81,6 +83,8 @@ BEGIN {
         json_dwiw => {
             encoder       => 'to_json',
             decoder       => 'from_json',
+            get_true      => sub { return JSON::DWIW->true; },
+            get_false     => sub { return JSON::DWIW->false; },
             create_object => sub {
                 my ( $self, $conf ) = @_;
                 my @params = qw(bare_keys);
@@ -94,6 +98,8 @@ BEGIN {
         json_xs_1 => {
             encoder       => 'to_json',
             decoder       => 'from_json',
+            get_true      => sub { return \1; },
+            get_false     => sub { return \0; },
             create_object => sub {
                 my ( $self, $conf ) = @_;
 
@@ -123,6 +129,8 @@ BEGIN {
         json_xs_2 => {
             encoder       => 'encode_json',
             decoder       => 'decode_json',
+            get_true      => sub { return \1; },
+            get_false     => sub { return \0; },
             create_object => sub {
                 require utf8;
                 utf8->import();
@@ -162,6 +170,8 @@ BEGIN {
         json_syck => {
             encoder       => 'Dump',
             decoder       => 'Load',
+            get_true      => sub { croak "JSON::Syck does not support special boolean values"; },
+            get_false     => sub { croak "JSON::Syck does not support special boolean values"; },
             create_object => sub {
                 my ( $self, $conf ) = @_;
                 croak "JSON::Syck does not support utf8" if $conf->{utf8};
@@ -351,6 +361,38 @@ sub handler {
         return $self->[HANDLER];
     }
     return $handler;
+}
+
+=over
+
+=item C<true>
+
+Takes no arguments, returns the special value that the internal JSON
+object uses to map to a JSON C<true> boolean.
+
+=back
+
+=cut
+
+sub true {
+    my $key = _make_key($handler);
+    return $conf{$key}->{get_true}->();
+}
+
+=over
+
+=item C<false>
+
+Takes no arguments, returns the special value that the internal JSON
+object uses to map to a JSON C<false> boolean.
+
+=back
+
+=cut
+
+sub false {
+    my $key = _make_key($handler);
+    return $conf{$key}->{get_false}->();
 }
 
 =over
