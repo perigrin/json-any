@@ -1,4 +1,10 @@
 Revision history for JSON-Any
+1.17    2008-07-05
+        * Added documentation indicating that allow_blessed works for most useful
+          cases (Robin Berjon)
+        * Added support for obtaining the underlying representations for
+          true/false in JSON.
+
 1.16    2008-02-13
         * JSON::Any now compatible with both versions of JSON::XS  (Simon Wistow)
         * Document that calling 'use JSON::Any ();' is a bad idea
