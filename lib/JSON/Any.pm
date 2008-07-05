@@ -289,6 +289,11 @@ supported by the underlying JSON modules) is C<utf8>. When this parameter is
 enabled all resulting JSON will be marked as unicode, and all unicode strings
 in the input data structure will be preserved as such.
 
+Also note that the C<allow_blessed> parameter is recognised by all the modules
+that throw exceptions when a blessed reference is given them meaning that setting
+it to true works for all modules. Of course, that means that you cannot set it
+to false intentionally in order to always get such exceptions.
+
 The actual output will vary, for example L<JSON> will encode and decode unicode
 chars (the resulting JSON is not unicode) wheras L<JSON::XS> will emit unicode
 JSON.
