@@ -31,10 +31,6 @@ feature 'JSON::XS',
   -default   => 0,
   'JSON::XS' => '0';
 
-feature 'JSON::PC',
-  -default   => 0,
-  'JSON::PC' => '0';
-
 feature 'JSON::DWIW',
   -default     => 0,
   'JSON::DWIW' => '0';
