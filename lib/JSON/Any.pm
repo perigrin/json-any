@@ -16,11 +16,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.17
+Version 1.18
 
 =cut
 
-our $VERSION = '1.17';
+our $VERSION = '1.18';
 
 our $UTF8;
 
@@ -181,9 +181,6 @@ BEGIN {
               }
         },
     );
-
-    # JSON::PC claims it has the same API as JSON
-    $conf{json_pc} = $conf{json};
 }
 
 sub _make_key {
