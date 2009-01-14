@@ -201,7 +201,7 @@ sub import {
 
     @order = split /\s/, $ENV{JSON_ANY_ORDER}
       if !@order and $ENV{JSON_ANY_ORDER};
-    @order = qw(XS JSON DWIW Syck) unless @order;
+    @order = qw(XS JSON DWIW) unless @order;
 
     foreach my $testmod (@order) {
         $testmod = "JSON::$testmod" unless $testmod eq "JSON";
