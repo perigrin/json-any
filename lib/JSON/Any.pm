@@ -20,7 +20,7 @@ Version 1.18
 
 =cut
 
-our $VERSION = '1.18';
+our $VERSION = '1.19';
 
 our $UTF8;
 
@@ -259,13 +259,12 @@ for them in this order:
 	JSON::XS 
 	JSON 
 	JSON::DWIW 
-	JSON::Syck
 
 And loading the first one it finds.
 
 You may change the order by specifying it on the C<use JSON::Any> line:
 
-	use JSON::Any qw(DWIW Syck XS JSON);
+	use JSON::Any qw(DWIW XS JSON);
 
 Specifying an order that is missing one of the modules will prevent that module from being used:
 
@@ -273,6 +272,17 @@ Specifying an order that is missing one of the modules will prevent that module 
 
 This will check in that order, and will never attempt to load JSON::Syck. This can also be set via
 the $ENV{JSON_ANY_ORDER} environment variable.
+
+JSON::Syck has been deprecated by it's author, but in the attempt to still stay relevant as a "Compat Layer" 
+JSON::Any still supports it. This support however has been made optional, and disabled by default. If you would like
+to use JSON::Any with version 1.19 and above you'll need to explicitly add it to the import list.
+
+    use JSON::Any qw(Syck XS JSON); 
+    
+or 
+
+    $ENV{JSON_ANY_ORDER} = 'Syck XS JSON';
+
 
 WARNING: If you call JSON::Any with an empty list
 
@@ -505,7 +515,8 @@ underlying JSON module.
 =head1 AUTHOR
 
 Chris Thompson, C<< <cthom at cpan.org> >>
-Chris Prather, C<< <perigrin at cpan.org> >>
+Chris Prather, C<< <chris at prather.org> >>
+Robin Berjon, C<< robin at berjon.com >>
 
 =head1 BUGS
 
