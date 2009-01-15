@@ -13,7 +13,7 @@ if ($@) {
 
 $ENV{JSON_ANY_CONFIG} = "utf8=1";
 
-foreach my $backend qw(XS JSON DWIW Syck PC) {
+foreach my $backend qw(XS JSON DWIW Syck) {
     my $j = eval {
         JSON::Any->import($backend);
         JSON::Any->new;
