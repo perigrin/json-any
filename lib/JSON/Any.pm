@@ -1,9 +1,3 @@
-##############################################################################
-# JSON::Any
-# v1.16
-# Copyright (c) 2007 Chris Thompson
-##############################################################################
-
 package JSON::Any;
 
 use warnings;
@@ -16,11 +10,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.18
+Version 1.20
 
 =cut
 
-our $VERSION = '1.19';
+our $VERSION = '1.20';
 
 our $UTF8;
 
@@ -266,16 +260,19 @@ You may change the order by specifying it on the C<use JSON::Any> line:
 
 	use JSON::Any qw(DWIW XS JSON);
 
-Specifying an order that is missing one of the modules will prevent that module from being used:
+Specifying an order that is missing one of the modules will prevent that
+module from being used:
 
 	use JSON::Any qw(DWIW XS JSON);
 
-This will check in that order, and will never attempt to load JSON::Syck. This can also be set via
-the $ENV{JSON_ANY_ORDER} environment variable.
+This will check in that order, and will never attempt to load JSON::Syck. This
+can also be set via the $ENV{JSON_ANY_ORDER} environment variable.
 
-JSON::Syck has been deprecated by it's author, but in the attempt to still stay relevant as a "Compat Layer" 
-JSON::Any still supports it. This support however has been made optional, and disabled by default. If you would like
-to use JSON::Any with version 1.19 and above you'll need to explicitly add it to the import list.
+JSON::Syck has been deprecated by it's author, but in the attempt to still
+stay relevant as a "Compat Layer" JSON::Any still supports it. This support
+however has been made optional, and disabled by default. If you would like to
+use JSON::Any with version 1.19 and above you'll need to explicitly add it to
+the import list.
 
     use JSON::Any qw(Syck XS JSON); 
     
@@ -288,7 +285,8 @@ WARNING: If you call JSON::Any with an empty list
 
     use JSON::Any ();
     
-It will skip the JSON package detection routines and will die loudly that it couldn't find a package.
+It will skip the JSON package detection routines and will die loudly that it
+couldn't find a package.
 
 =head1 FUNCTIONS
 
@@ -296,10 +294,10 @@ It will skip the JSON package detection routines and will die loudly that it cou
 
 =item C<new>
 
-Will take any of the parameters for the underlying system and pass them through. 
-However these values don't map between JSON modules, so, from a portability
-standpoint this is really only helpful for those paramters that happen
-to have the same name. This will be addressed in a future release.
+Will take any of the parameters for the underlying system and pass them
+through. However these values don't map between JSON modules, so, from a
+portability standpoint this is really only helpful for those paramters that
+happen to have the same name. This will be addressed in a future release.
 
 The one parameter that is universally supported (to the extent that is
 supported by the underlying JSON modules) is C<utf8>. When this parameter is
@@ -307,13 +305,13 @@ enabled all resulting JSON will be marked as unicode, and all unicode strings
 in the input data structure will be preserved as such.
 
 Also note that the C<allow_blessed> parameter is recognised by all the modules
-that throw exceptions when a blessed reference is given them meaning that setting
-it to true works for all modules. Of course, that means that you cannot set it
-to false intentionally in order to always get such exceptions.
+that throw exceptions when a blessed reference is given them meaning that
+setting it to true works for all modules. Of course, that means that you
+cannot set it to false intentionally in order to always get such exceptions.
 
-The actual output will vary, for example L<JSON> will encode and decode unicode
-chars (the resulting JSON is not unicode) wheras L<JSON::XS> will emit unicode
-JSON.
+The actual output will vary, for example L<JSON> will encode and decode
+unicode chars (the resulting JSON is not unicode) wheras L<JSON::XS> will emit
+unicode JSON.
 
 =back
 
@@ -512,6 +510,10 @@ underlying JSON module.
 *Load      = \&jsonToObj;
 *decode    = \&jsonToObj;
 
+1;
+__END__
+
+
 =head1 AUTHOR
 
 Chris Thompson, C<< <cthom at cpan.org> >>
@@ -541,11 +543,9 @@ San Dimas High School Football Rules!
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2007 Chris Thompson, some rights reserved.
+Copyright 2007-2009 Chris Thompson, some rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-
-1;    # End of JSON::Any
