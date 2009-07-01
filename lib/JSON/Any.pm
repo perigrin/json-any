@@ -209,7 +209,10 @@ sub import {
         }
     }
 
-    croak "Couldn't find a JSON Package."   unless $handler;
+    unless ( $handler ) {
+        my $last = pop @order;
+        croak "Couldn't find a JSON package. Need ", join ', ' => @order, "or $last";
+    }
     croak "Couldn't find a decoder method." unless $decoder;
     croak "Couldn't find a encoder method." unless $encoder;
 }
