@@ -1,5 +1,9 @@
 Revision history for JSON-Any
-1.19    2009-01-??
+1.20    2009-07-02
+        * Re-work things so that deprecated modules just warn but aren't actually excluded (perigrin)
+        * Improve the warnings when things go awry (semifor)
+
+1.19    2009-01-15
         * Make JSON::Syck optional and deprecated. (perigrin)
         * Added tests for string escapes. (semifor)
 
