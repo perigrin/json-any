@@ -228,18 +228,17 @@ sub import {
                 join ', ' => @default, "or $last";
         }
     }
-    unless ($handler) {
+    else {
         ( $handler, $encoder, $decoder ) = _try_loading(@default);
-    }
-    unless ($handler) {
-        ( $handler, $encoder, $decoder ) = _try_loading(@deprecated);
-        if ($handler) {
-            my $last = pop @default;
-            carp "Found deprecated package $handler. Please upgrade to ",
-                join ', ' => @default, "or $last";
+        unless ($handler) {
+            ( $handler, $encoder, $decoder ) = _try_loading(@deprecated);
+            if ($handler) {
+                my $last = pop @default;
+                carp "Found deprecated package $handler. Please upgrade to ",
+                    join ', ' => @default, "or $last";
+            }
         }
     }
-
     unless ($handler) {
         my $last = pop @default;
         croak "Couldn't find a JSON package. Need ", join ', ' => @default,

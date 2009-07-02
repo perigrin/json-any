@@ -28,8 +28,8 @@ else {
 }
 
 feature 'JSON::XS',
-  -default   => 0,
-  'JSON::XS' => '0';
+  -default   => 1,
+  'JSON::XS' => '2.232';
 
 feature 'JSON::DWIW',
   -default     => 0,
@@ -40,7 +40,7 @@ feature 'JSON::Syck',
   'JSON::Syck' => '0';
 
 # Specific dependencies
-build_requires 'Test::More' => '0';
+build_requires 'Test::More' => '0.42';
 no_index 'directory'        => 'ex';
 
 if ( $ENV{BUILD_STANDARD_TESTS} ) {
@@ -48,5 +48,7 @@ if ( $ENV{BUILD_STANDARD_TESTS} ) {
     use_standard_tests;
 }
 
+auto_set_repository;
+auto_manifest;
 auto_install;
 WriteAll;
