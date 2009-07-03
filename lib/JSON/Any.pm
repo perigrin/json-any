@@ -123,8 +123,8 @@ BEGIN {
         json_xs_2 => {
             encoder       => 'encode_json',
             decoder       => 'decode_json',
-            get_true      => sub { return \1; },
-            get_false     => sub { return \0; },
+            get_true      => sub { return JSON::XS::true(); },
+            get_false     => sub { return JSON::XS::false(); },
             create_object => sub {
                 require utf8;
                 utf8->import();
