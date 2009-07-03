@@ -1,5 +1,6 @@
 Revision history for JSON-Any
         * Update JSON::XS boolean support; it provides true/false methods (semifor)
+        * Added a workaround for handlers that fail to decode bare true/false values (semifor)
 
 1.20    2009-07-02
         * Re-work things so that deprecated modules just warn but aren't actually excluded (perigrin)

@@ -512,6 +512,11 @@ sub jsonToObj {
     my $obj  = shift;
     croak 'must provide json to convert' unless defined $obj;
 
+    # some handlers can't parse single booleans (I'm looking at you DWIW)
+    if ( $obj =~ /^(true|false)$/ ) {
+        return $self->$1;
+    }
+
     if ( ref $self ) {
         my $method;
         unless ( ref $self->[DECODER] ) {
