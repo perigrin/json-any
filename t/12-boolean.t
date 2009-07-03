@@ -39,7 +39,7 @@ sub test {
             JSON::Any->new;
         };
 
-        diag("$backend: " . $@), skip("backend failed to load", 8) if $@;
+        diag("$backend: " . $@), skip("Backend $backend failed to load", 8) if $@;
 
         $j and $j->handler or next;
 
