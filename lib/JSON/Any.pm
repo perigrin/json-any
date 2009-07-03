@@ -32,8 +32,6 @@ BEGIN {
             get_true      => sub { return JSON::true(); },
             get_false     => sub { return JSON::false(); },
             create_object => sub {
-                require utf8;
-                utf8->import();
                 JSON->import( '-support_by_pp', '-no_export' );
                 my ( $self, $conf ) = @_;
                 my @params = qw(
@@ -126,8 +124,6 @@ BEGIN {
             get_true      => sub { return JSON::XS::true(); },
             get_false     => sub { return JSON::XS::false(); },
             create_object => sub {
-                require utf8;
-                utf8->import();
                 my ( $self, $conf ) = @_;
 
                 my @params = qw(
