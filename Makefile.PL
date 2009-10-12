@@ -48,6 +48,11 @@ if ( $ENV{BUILD_STANDARD_TESTS} ) {
     use_standard_tests;
 }
 
+if ($Module::Install::AUTHOR) {
+    system("pod2text lib/JSON/Any.pm > README")
+        and die;
+}
+
 auto_set_repository;
 auto_manifest;
 auto_install;
