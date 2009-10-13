@@ -10,11 +10,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.21
+Version 1.22
 
 =cut
 
-our $VERSION = '1.21';
+our $VERSION = '1.22';
 
 our $UTF8;
 
@@ -552,12 +552,17 @@ underlying JSON module.
 __END__
 
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Chris Thompson, C<< <cthom at cpan.org> >>
-Chris Prather, C<< <chris at prather.org> >>
-Robin Berjon, C<< robin at berjon.com >>
-Marc Mims C<<marc@questright.com>>
+Chris Thompson C<< cthom at cpan.org >>
+
+Chris Prather C<< chris at prather.org >>
+
+Robin Berjon C<< robin at berjon.com >>
+
+Marc Mims C<< marc at questright.com >>
+
+Tomas Doran C<< bobtfish at bobtfish.net >>
 
 =head1 BUGS
 
