@@ -140,10 +140,16 @@ FUNCTIONS
         Aliases for jsonToObj, can be used interchangeably, regardless of
         the underlying JSON module.
 
-AUTHOR
-    Chris Thompson, "<cthom at cpan.org>" Chris Prather, "<chris at
-    prather.org>" Robin Berjon, "robin at berjon.com" Marc Mims
-    "<marc@questright.com">
+AUTHORS
+    Chris Thompson "cthom at cpan.org"
+
+    Chris Prather "chris at prather.org"
+
+    Robin Berjon "robin at berjon.com"
+
+    Marc Mims "marc at questright.com"
+
+    Tomas Doran "bobtfish at bobtfish.net"
 
 BUGS
     Please report any bugs or feature requests to "bug-json-any at
