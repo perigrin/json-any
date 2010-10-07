@@ -26,7 +26,42 @@ use constant UTF8    => 3;
 
 BEGIN {
     %conf = (
-        json => {
+        json_1 => {
+            encoder       => 'objToJson',
+            decoder       => 'jsonToObj',
+            get_true      => sub { return JSON::True(); },
+            get_false     => sub { return JSON::False(); },
+            create_object => sub {
+                require JSON;
+                my ( $self, $conf ) = @_;
+                my @params = qw(
+                    autoconv
+                    skipinvalid
+                    execcoderef
+                    pretty
+                    indent
+                    delimiter
+                    keysort
+                    convblessed
+                    selfconvert
+                    singlequote
+                    quoteapos
+                    unmapping
+                    barekey
+                );
+                my $obj = $handler->new( utf8 => $conf->{utf8} ); ## constructor only
+
+                for my $mutator (@params) {
+                    next unless exists $conf->{$mutator};
+                    $obj = $obj->$mutator( $conf->{$mutator} );
+                }
+
+                $self->[ENCODER] = 'objToJson';
+                $self->[DECODER] = 'jsonToObj';
+                $self->[HANDLER] = $obj;
+            },
+        },
+        json_2 => {
             encoder       => 'encode_json',
             decoder       => 'decode_json',
             get_true      => sub { return JSON::true(); },
@@ -180,7 +215,7 @@ BEGIN {
 sub _make_key {
     my $handler = shift;
     ( my $key = lc($handler) ) =~ s/::/_/g;
-    if ( 'json_xs' eq $key ) {
+    if ( 'json_xs' eq $key || 'json' eq $key ) {
         no strict 'refs';
         $key .= "_" . ( split /\./, ${"$handler\::VERSION"} )[0];
     }
