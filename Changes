@@ -1,5 +1,8 @@
 Revision history for JSON-Any
 
+1.23    2010-10-07
+        * support JSON v1.15 as well as 2.x (arcanez)
+
 1.22	2009-10-12
         * Update JSON::XS tests to deal with inconsistent white space
           generation between releases (t0m)
