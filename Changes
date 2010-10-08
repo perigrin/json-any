@@ -1,5 +1,8 @@
 Revision history for JSON-Any
 
+1.24	2010-10-08
+	* Fix the Build from where MI changed underneath me (perigrin)
+
 1.23    2010-10-07
         * support JSON v1.15 as well as 2.x (arcanez)
 

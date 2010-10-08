@@ -10,11 +10,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.23
+Version 1.24
 
 =cut
 
-our $VERSION = '1.23';
+our $VERSION = '1.24';
 
 our $UTF8;
 

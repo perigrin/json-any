@@ -9,7 +9,7 @@ all_from 'lib/JSON/Any.pm';
 requires 'Carp' => '0';
 
 sub has_json () {
-    @order = qw(XS JSON DWIW);
+    our @order = qw(XS JSON DWIW);
     foreach my $testmod (@order) {
         $testmod = "JSON::$testmod" unless $testmod eq "JSON";
         eval "require $testmod";
@@ -43,11 +43,6 @@ feature 'JSON::Syck',
 build_requires 'Test::More' => '0.42';
 no_index 'directory'        => 'ex';
 
-if ( $ENV{BUILD_STANDARD_TESTS} ) {
-    use_test_base;
-    use_standard_tests;
-}
-
 if ($Module::Install::AUTHOR) {
     system("pod2text lib/JSON/Any.pm > README")
         and die;
@@ -55,5 +50,4 @@ if ($Module::Install::AUTHOR) {
 
 auto_set_repository;
 auto_manifest;
-auto_install;
 WriteAll;
