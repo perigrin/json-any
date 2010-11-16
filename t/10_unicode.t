@@ -13,7 +13,7 @@ if ($@) {
 
 $ENV{JSON_ANY_CONFIG} = "utf8=1";
 
-foreach my $backend qw(XS JSON DWIW Syck) {
+foreach my $backend (qw(XS JSON DWIW Syck)) {
     my $j = eval {
         JSON::Any->import($backend);
         JSON::Any->new;
@@ -28,7 +28,7 @@ foreach my $backend qw(XS JSON DWIW Syck) {
     plan 'no_plan' unless $ENV{JSON_ANY_RAN_TESTS};
     $ENV{JSON_ANY_RAN_TESTS} = 1;
 
-    foreach my $text qw(foo שלום) {
+    foreach my $text (qw(foo שלום)) {
 
         my $struct = [$text];
 
