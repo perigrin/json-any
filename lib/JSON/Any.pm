@@ -357,7 +357,7 @@ couldn't find a package.
 =head1 DEPRECATION
 
 The original need for JSON::Any has been solved (quite some time ago
-actually). If you're producing new code it is reccomended to use JSON.pm which
+actually). If you're producing new code it is recommended to use JSON.pm which
 will optionally use JSON::XS for speed purposes.
 
 JSON::Any will continue to be maintained for compatibility with existing code,
@@ -371,7 +371,7 @@ and frankly because the maintainer prefers the JSON::Any API.
 
 Will take any of the parameters for the underlying system and pass them
 through. However these values don't map between JSON modules, so, from a
-portability standpoint this is really only helpful for those paramters that
+portability standpoint this is really only helpful for those parameters that
 happen to have the same name. This will be addressed in a future release.
 
 The one parameter that is universally supported (to the extent that is
@@ -385,7 +385,7 @@ setting it to true works for all modules. Of course, that means that you
 cannot set it to false intentionally in order to always get such exceptions.
 
 The actual output will vary, for example L<JSON> will encode and decode
-unicode chars (the resulting JSON is not unicode) wheras L<JSON::XS> will emit
+unicode chars (the resulting JSON is not unicode) whereas L<JSON::XS> will emit
 unicode JSON.
 
 =back
