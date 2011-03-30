@@ -1,5 +1,8 @@
 Revision history for JSON-Any
 
+1.26    2011-03-30
+        * Add Deprecation notice (perigrin)
+
 1.25    2010-11-16
         * Fix the test suite to be 5.14 compatible (toddr)
         

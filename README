@@ -1,179 +1,196 @@
+JSON::Any(3)          User Contributed Perl Documentation         JSON::Any(3)
+
+
+
 NAME
-    JSON::Any - Wrapper Class for the various JSON classes.
+       JSON::Any − Wrapper Class for the various JSON classes.
 
 VERSION
-    Version 1.23
+       Version 1.26
 
 SYNOPSIS
-    This module will provide a coherent API to bring together the various
-    JSON modules currently on CPAN. This module will allow you to code to
-    any JSON API and have it work regardless of which JSON module is
-    actually installed.
+       This module tries to provide a coherent API to bring together the
+       various JSON modules currently on CPAN. This module will allow you to
+       code to any JSON API and have it work regardless of which JSON module
+       is actually installed.
 
-            use JSON::Any;
+               use JSON::Any;
 
-            my $j = JSON::Any->new;
+               my $j = JSON::Any−>new;
 
-            $json = $j->objToJson({foo=>'bar', baz=>'quux'});
-            $obj = $j->jsonToObj($json);
+               $json = $j−>objToJson({foo=>'bar', baz=>'quux'});
+               $obj = $j−>jsonToObj($json);
 
-    or
+       or
 
-            $json = $j->encode({foo=>'bar', baz=>'quux'});
-            $obj = $j->decode($json);
+               $json = $j−>encode({foo=>'bar', baz=>'quux'});
+               $obj = $j−>decode($json);
 
-    or
+       or
 
-            $json = $j->Dump({foo=>'bar', baz=>'quux'});
-            $obj = $j->Load($json);
+               $json = $j−>Dump({foo=>'bar', baz=>'quux'});
+               $obj = $j−>Load($json);
 
-    or
+       or
 
-            $json = $j->to_json({foo=>'bar', baz=>'quux'});
-            $obj = $j->from_json($json);
+               $json = $j−>to_json({foo=>'bar', baz=>'quux'});
+               $obj = $j−>from_json($json);
 
-    or without creating an object:
+       or without creating an object:
 
-            $json = JSON::Any->objToJson({foo=>'bar', baz=>'quux'});
-            $obj = JSON::Any->jsonToObj($json);
+               $json = JSON::Any−>objToJson({foo=>'bar', baz=>'quux'});
+               $obj = JSON::Any−>jsonToObj($json);
 
-    On load, JSON::Any will find a valid JSON module in your @INC by looking
-    for them in this order:
+       On load, JSON::Any will find a valid JSON module in your @INC by
+       looking for them in this order:
 
-            JSON::XS 
-            JSON 
-            JSON::DWIW
+               JSON::XS
+               JSON
+               JSON::DWIW
 
-    And loading the first one it finds.
+       And loading the first one it finds.
 
-    You may change the order by specifying it on the "use JSON::Any" line:
+       You may change the order by specifying it on the "use JSON::Any" line:
 
-            use JSON::Any qw(DWIW XS JSON);
+               use JSON::Any qw(DWIW XS JSON);
 
-    Specifying an order that is missing one of the modules will prevent that
-    module from being used:
+       Specifying an order that is missing one of the modules will prevent
+       that module from being used:
 
-            use JSON::Any qw(DWIW XS JSON);
+               use JSON::Any qw(DWIW XS JSON);
 
-    This will check in that order, and will never attempt to load
-    JSON::Syck. This can also be set via the $ENV{JSON_ANY_ORDER}
-    environment variable.
+       This will check in that order, and will never attempt to load
+       JSON::Syck. This can also be set via the $ENV{JSON_ANY_ORDER}
+       environment variable.
 
-    JSON::Syck has been deprecated by it's author, but in the attempt to
-    still stay relevant as a "Compat Layer" JSON::Any still supports it.
-    This support however has been made optional starting with JSON::Any
-    1.19. In deference to a bug request starting with JSON 1.20 JSON::Syck
-    and other deprecated modules will still be installed, but only as a last
-    resort and will now include a warning.
+       JSON::Syck has been deprecated by it’s author, but in the attempt to
+       still stay relevant as a "Compat Layer" JSON::Any still supports it.
+       This support however has been made optional starting with JSON::Any
+       1.19. In deference to a bug request starting with JSON 1.20 JSON::Syck
+       and other deprecated modules will still be installed, but only as a
+       last resort and will now include a warning.
 
-        use JSON::Any qw(Syck XS JSON);
+           use JSON::Any qw(Syck XS JSON);
 
-    or
+       or
 
-        $ENV{JSON_ANY_ORDER} = 'Syck XS JSON';
+           $ENV{JSON_ANY_ORDER} = 'Syck XS JSON';
 
-    WARNING: If you call JSON::Any with an empty list
+       WARNING: If you call JSON::Any with an empty list
 
-        use JSON::Any ();
+           use JSON::Any ();
 
-    It will skip the JSON package detection routines and will die loudly
-    that it couldn't find a package.
+       It will skip the JSON package detection routines and will die loudly
+       that it couldn’t find a package.
 
-FUNCTIONS
-    "new"
-        Will take any of the parameters for the underlying system and pass
-        them through. However these values don't map between JSON modules,
-        so, from a portability standpoint this is really only helpful for
-        those paramters that happen to have the same name. This will be
-        addressed in a future release.
+DEPRECATION
+       The original need for JSON::Any has been solved (quite some time ago
+       actually). If you’re producing new code it is reccomended to use
+       JSON.pm which will optionally use JSON::XS for speed purposes.
 
-        The one parameter that is universally supported (to the extent that
-        is supported by the underlying JSON modules) is "utf8". When this
-        parameter is enabled all resulting JSON will be marked as unicode,
-        and all unicode strings in the input data structure will be
-        preserved as such.
+       JSON::Any will continue to be maintained for compatibility with
+       existing code, and frankly because the maintainer prefers the JSON::Any
+       API.
 
-        Also note that the "allow_blessed" parameter is recognised by all
-        the modules that throw exceptions when a blessed reference is given
-        them meaning that setting it to true works for all modules. Of
-        course, that means that you cannot set it to false intentionally in
-        order to always get such exceptions.
+METHODS
+       "new"
+           Will take any of the parameters for the underlying system and pass
+           them through. However these values don’t map between JSON modules,
+           so, from a portability standpoint this is really only helpful for
+           those paramters that happen to have the same name. This will be
+           addressed in a future release.
 
-        The actual output will vary, for example JSON will encode and decode
-        unicode chars (the resulting JSON is not unicode) wheras JSON::XS
-        will emit unicode JSON.
+           The one parameter that is universally supported (to the extent that
+           is supported by the underlying JSON modules) is "utf8". When this
+           parameter is enabled all resulting JSON will be marked as unicode,
+           and all unicode strings in the input data structure will be
+           preserved as such.
 
-    "handlerType"
-        Takes no arguments, returns a string indicating which JSON Module is
-        in use.
+           Also note that the "allow_blessed" parameter is recognised by all
+           the modules that throw exceptions when a blessed reference is given
+           them meaning that setting it to true works for all modules. Of
+           course, that means that you cannot set it to false intentionally in
+           order to always get such exceptions.
 
-    "handler"
-        Takes no arguments, if called on an object returns the internal
-        JSON::* object in use. Otherwise returns the JSON::* package we are
-        using for class methods.
+           The actual output will vary, for example JSON will encode and
+           decode unicode chars (the resulting JSON is not unicode) wheras
+           JSON::XS will emit unicode JSON.
 
-    "true"
-        Takes no arguments, returns the special value that the internal JSON
-        object uses to map to a JSON "true" boolean.
+       "handlerType"
+           Takes no arguments, returns a string indicating which JSON Module
+           is in use.
 
-    "false"
-        Takes no arguments, returns the special value that the internal JSON
-        object uses to map to a JSON "false" boolean.
+       "handler"
+           Takes no arguments, if called on an object returns the internal
+           JSON::* object in use.  Otherwise returns the JSON::* package we
+           are using for class methods.
 
-    "objToJson"
-        Takes a single argument, a hashref to be converted into JSON. It
-        returns the JSON text in a scalar.
+       "true"
+           Takes no arguments, returns the special value that the internal
+           JSON object uses to map to a JSON "true" boolean.
 
-    "to_json"
-    "Dump"
-    "encode"
-        Aliases for objToJson, can be used interchangeably, regardless of
-        the underlying JSON module.
+       "false"
+           Takes no arguments, returns the special value that the internal
+           JSON object uses to map to a JSON "false" boolean.
 
-    "jsonToObj"
-        Takes a single argument, a string of JSON text to be converted back
-        into a hashref.
+       "objToJson"
+           Takes a single argument, a hashref to be converted into JSON.  It
+           returns the JSON text in a scalar.
 
-    "from_json"
-    "Load"
-    "decode"
-        Aliases for jsonToObj, can be used interchangeably, regardless of
-        the underlying JSON module.
+       "to_json"
+       "Dump"
+       "encode"
+           Aliases for objToJson, can be used interchangeably, regardless of
+           the underlying JSON module.
+
+       "jsonToObj"
+           Takes a single argument, a string of JSON text to be converted back
+           into a hashref.
+
+       "from_json"
+       "Load"
+       "decode"
+           Aliases for jsonToObj, can be used interchangeably, regardless of
+           the underlying JSON module.
 
 AUTHORS
-    Chris Thompson "cthom at cpan.org"
+       Chris Thompson "cthom at cpan.org"
 
-    Chris Prather "chris at prather.org"
+       Chris Prather "chris at prather.org"
 
-    Robin Berjon "robin at berjon.com"
+       Robin Berjon "robin at berjon.com"
 
-    Marc Mims "marc at questright.com"
+       Marc Mims "marc at questright.com"
 
-    Tomas Doran "bobtfish at bobtfish.net"
+       Tomas Doran "bobtfish at bobtfish.net"
 
 BUGS
-    Please report any bugs or feature requests to "bug-json-any at
-    rt.cpan.org", or through the web interface at
-    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=JSON-Any>. I will be
-    notified, and then you'll automatically be notified of progress on your
-    bug as I make changes.
+       Please report any bugs or feature requests to "bug−json−any at
+       rt.cpan.org", or through the web interface at
+       http://rt.cpan.org/NoAuth/ReportBug.html?Queue=JSON−Any
+       <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=JSON‐Any>.  I will be
+       notified, and then you’ll automatically be notified of progress on your
+       bug as I make changes.
 
 ACKNOWLEDGEMENTS
-    This module came about after discussions on irc.perl.org about the fact
-    that there were now six separate JSON perl modules with different
-    interfaces.
+       This module came about after discussions on irc.perl.org about the fact
+       that there were now six separate JSON perl modules with different
+       interfaces.
 
-    In the spirit of Class::Any, JSON::Any was created with the considerable
-    help of Matt 'mst' Trout.
+       In the spirit of Class::Any, JSON::Any was created with the
+       considerable help of Matt ’mst’ Trout.
 
-    Simon Wistow graciously supplied a patch for backwards compat with
-    JSON::XS versions previous to 2.01
+       Simon Wistow graciously supplied a patch for backwards compat with
+       JSON::XS versions previous to 2.01
 
-    San Dimas High School Football Rules!
+       San Dimas High School Football Rules!
 
-COPYRIGHT & LICENSE
-    Copyright 2007-2009 Chris Thompson, some rights reserved.
+COPYRIGHT && LICENSE
+       Copyright 2007−2011 Chris Thompson, some rights reserved.
 
-    This program is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
 
+
+
+perl v5.12.2                      2011‐03‐30                      JSON::Any(3)

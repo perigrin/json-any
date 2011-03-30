@@ -10,11 +10,11 @@ JSON::Any - Wrapper Class for the various JSON classes.
 
 =head1 VERSION
 
-Version 1.25
+Version 1.26
 
 =cut
 
-our $VERSION = '1.25';
+our $VERSION = '1.26';
 
 our $UTF8;
 
@@ -281,7 +281,7 @@ sub import {
 
 =head1 SYNOPSIS
 
-This module will provide a coherent API to bring together the various JSON
+This module tries to provide a coherent API to bring together the various JSON
 modules currently on CPAN. This module will allow you to code to any JSON API
 and have it work regardless of which JSON module is actually installed.
 
@@ -354,7 +354,16 @@ WARNING: If you call JSON::Any with an empty list
 It will skip the JSON package detection routines and will die loudly that it
 couldn't find a package.
 
-=head1 FUNCTIONS
+=head1 DEPRECATION
+
+The original need for JSON::Any has been solved (quite some time ago
+actually). If you're producing new code it is reccomended to use JSON.pm which
+will optionally use JSON::XS for speed purposes.
+
+JSON::Any will continue to be maintained for compatibility with existing code,
+and frankly because the maintainer prefers the JSON::Any API.
+
+=head1 METHODS
 
 =over
 
