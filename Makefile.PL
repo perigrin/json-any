@@ -50,4 +50,5 @@ if ($Module::Install::AUTHOR) {
 
 auto_set_repository;
 auto_manifest;
+auto_install;
 WriteAll;
