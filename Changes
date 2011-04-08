@@ -1,5 +1,8 @@
 Revision history for JSON-Any
 
+1.27    2011-04-08
+        * Add auto_install so feature works again, fixes RT#67169 (perigrin)
+
 1.26    2011-03-30
         * Add Deprecation notice (perigrin)
 
