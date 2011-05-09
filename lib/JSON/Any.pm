@@ -4,15 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak carp);
 
-=head1 NAME
-
-JSON::Any - Wrapper Class for the various JSON classes.
-
-=head1 VERSION
-
-Version 1.29
-
-=cut
+# ABSTRACT: Wrapper Class for the various JSON classes.
 
 our $VERSION = '1.29';
 
