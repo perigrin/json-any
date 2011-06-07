@@ -29,7 +29,7 @@ else {
 
 feature 'JSON::XS',
   -default   => 1,
-  'JSON::XS' => '2.232';
+  'JSON::XS' => '2.3';
 
 feature 'JSON::DWIW',
   -default     => 0,
