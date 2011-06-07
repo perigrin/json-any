@@ -2,7 +2,7 @@ NAME
     JSON::Any - Wrapper Class for the various JSON classes.
 
 VERSION
-    Version 1.27
+    Version 1.28
 
 SYNOPSIS
     This module tries to provide a coherent API to bring together the

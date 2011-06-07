@@ -1,7 +1,10 @@
 Revision history for JSON-Any
 
-1.28    2011-06-07
+1.29    2011-06-07
 	* Artificially bump our version number because an upstream author decided to not play nice. Fixes RT#68690 (perigrin)
+
+1.28	2011-05-09
+	* Move podspell into xt/ (perigrin)
 
 1.27    2011-04-08
         * Add auto_install so feature works again, fixes RT#67169 (perigrin)
