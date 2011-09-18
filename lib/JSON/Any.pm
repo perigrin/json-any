@@ -6,8 +6,6 @@ use Carp qw(croak carp);
 
 # ABSTRACT: Wrapper Class for the various JSON classes.
 
-our $VERSION = '1.29';
-
 our $UTF8;
 
 my ( %conf, $handler, $encoder, $decoder );
@@ -588,26 +586,6 @@ underlying JSON module.
 __END__
 
 
-=head1 AUTHORS
-
-Chris Thompson C<< cthom at cpan.org >>
-
-Chris Prather C<< chris at prather.org >>
-
-Robin Berjon C<< robin at berjon.com >>
-
-Marc Mims C<< marc at questright.com >>
-
-Tomas Doran C<< bobtfish at bobtfish.net >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-json-any at rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=JSON-Any>.
-I will be notified, and then you'll automatically be notified of progress on
-your bug as I make changes.
-
 =head1 ACKNOWLEDGEMENTS
 
 This module came about after discussions on irc.perl.org about the fact 
@@ -621,11 +599,3 @@ versions previous to 2.01
 
 San Dimas High School Football Rules!
 
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2007-2009 Chris Thompson, some rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
