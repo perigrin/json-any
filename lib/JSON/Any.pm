@@ -206,6 +206,10 @@ BEGIN {
     $conf{json_pp}{get_true}  = sub { return JSON::PP::true(); };
     $conf{json_pp}{get_false} = sub { return JSON::PP::false(); };
 
+    # Cpanel::JSON::XS is a fork of JSON::XS (currently)
+    $conf{cpanel_json_xs} = { %{ $conf{json_xs_2} } };
+    $conf{cpanel_json_xs}{get_true}  = sub { return Cpanel::JSON::XS::true(); };
+    $conf{cpanel_json_xs}{get_false} = sub { return Cpanel::JSON::XS::false(); };
 }
 
 sub _make_key {
@@ -218,11 +222,12 @@ sub _make_key {
     return $key;
 }
 
-my @default    = qw(XS PP JSON DWIW);
+my @default    = qw(CPANEL XS PP JSON DWIW);
 my @deprecated = qw(Syck);
 
 sub _module_name {
     my ($testmod) = @_;
+    return 'Cpanel::JSON::XS' if $testmod eq 'CPANEL';
     return 'JSON'             if $testmod eq 'JSON';
     return "JSON::$testmod";
 }
@@ -317,6 +322,7 @@ or without creating an object:
 On load, JSON::Any will find a valid JSON module in your @INC by looking 
 for them in this order:
 
+    Cpanel::JSON::XS
 	JSON::XS 
     JSON::PP
 	JSON 
@@ -326,12 +332,12 @@ And loading the first one it finds.
 
 You may change the order by specifying it on the C<use JSON::Any> line:
 
-	use JSON::Any qw(DWIW XS JSON PP);
+	use JSON::Any qw(DWIW XS CPANEL JSON PP);
 
 Specifying an order that is missing modules will prevent those module from 
 being used:
 
-	use JSON::Any qw(XS PP); 
+	use JSON::Any qw(CPANEL PP); # same as JSON::MaybeXS
 
 This will check in that order, and will never attempt to load JSON::XS, 
 JSON.pm, or JSON::DWIW. This can also be set via the $ENV{JSON_ANY_ORDER} 
