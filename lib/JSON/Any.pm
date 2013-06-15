@@ -289,6 +289,10 @@ sub import {
     croak "Couldn't find a encoder method." unless $encoder;
 }
 
+=head1 NAME 
+
+JSON::Any
+
 =head1 SYNOPSIS
 
 This module tries to provide a coherent API to bring together the various JSON

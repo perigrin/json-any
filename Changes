@@ -1,5 +1,9 @@
 Revision history for JSON-Any
 
+1.30    2013-06-15
+    * Add support for Cpanel::JSON::XS and JSON::PP. Fixes RT#85424 & RT#67967. (perigrin)
+    * Fix documentation bug RT#86065.
+     
 1.29    2011-06-07
 	* Artificially bump our version number because an upstream author decided to not play nice. Fixes RT#68690 (perigrin)
 
