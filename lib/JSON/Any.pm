@@ -200,6 +200,12 @@ BEGIN {
                 }
         },
     );
+
+    # JSON::PP has the same API as JSON.pm v2
+    $conf{json_pp} = { %{ $conf{json_2} } };
+    $conf{json_pp}{get_true}  = sub { return JSON::PP::true(); };
+    $conf{json_pp}{get_false} = sub { return JSON::PP::false(); };
+
 }
 
 sub _make_key {
@@ -212,14 +218,20 @@ sub _make_key {
     return $key;
 }
 
-my @default    = qw(XS JSON DWIW);
+my @default    = qw(XS PP JSON DWIW);
 my @deprecated = qw(Syck);
+
+sub _module_name {
+    my ($testmod) = @_;
+    return 'JSON'             if $testmod eq 'JSON';
+    return "JSON::$testmod";
+}
 
 sub _try_loading {
     my @order = @_;
     ( $handler, $encoder, $decoder ) = ();
-    foreach my $testmod (@order) {
-        $testmod = "JSON::$testmod" unless $testmod eq "JSON";
+    foreach my $mod (@order) {
+        my $testmod = _module_name($mod);
         eval "require $testmod";
         unless ($@) {
             $handler = $testmod;
@@ -306,6 +318,7 @@ On load, JSON::Any will find a valid JSON module in your @INC by looking
 for them in this order:
 
 	JSON::XS 
+    JSON::PP
 	JSON 
 	JSON::DWIW 
 
@@ -313,15 +326,16 @@ And loading the first one it finds.
 
 You may change the order by specifying it on the C<use JSON::Any> line:
 
-	use JSON::Any qw(DWIW XS JSON);
+	use JSON::Any qw(DWIW XS JSON PP);
 
-Specifying an order that is missing one of the modules will prevent that
-module from being used:
+Specifying an order that is missing modules will prevent those module from 
+being used:
 
-	use JSON::Any qw(DWIW XS JSON);
+	use JSON::Any qw(XS PP); 
 
-This will check in that order, and will never attempt to load JSON::Syck. This
-can also be set via the $ENV{JSON_ANY_ORDER} environment variable.
+This will check in that order, and will never attempt to load JSON::XS, 
+JSON.pm, or JSON::DWIW. This can also be set via the $ENV{JSON_ANY_ORDER} 
+environment variable.
 
 JSON::Syck has been deprecated by it's author, but in the attempt to still
 stay relevant as a "Compat Layer" JSON::Any still supports it. This support
