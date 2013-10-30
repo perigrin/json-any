@@ -8,7 +8,7 @@ if ($@) {
     plan skip_all => "$@";
 }
 else {
-    plan no_plan => 1;
+    plan 'no_plan';
 }
 
 SKIP: {

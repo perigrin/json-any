@@ -211,6 +211,11 @@ BEGIN {
     $conf{cpanel_json_xs} = { %{ $conf{json_xs_2} } };
     $conf{cpanel_json_xs}{get_true}  = sub { return Cpanel::JSON::XS::true(); };
     $conf{cpanel_json_xs}{get_false} = sub { return Cpanel::JSON::XS::false(); };
+
+    # JSON::XS 3 is almost the same as JSON::XS 2
+    $conf{json_xs_3} = { %{ $conf{json_xs_2} } };
+    $conf{json_xs_3}{get_true}  = sub { return Types::Serialiser::true(); };
+    $conf{json_xs_3}{get_false} = sub { return Types::Serialiser::false(); };
 }
 
 sub _make_key {
@@ -242,6 +247,7 @@ sub _try_loading {
         unless ($@) {
             $handler = $testmod;
             my $key = _make_key($handler);
+            next unless exists $conf{$key};
             $encoder = $conf{$key}->{encoder};
             $decoder = $conf{$key}->{decoder};
             last;

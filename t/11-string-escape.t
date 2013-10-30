@@ -33,7 +33,7 @@ my %one_way = (
     '"\/"' => '/',  # escaped solidus
 );
 
-test ($_) for qw(XS JSON DWIW);
+test ($_) for qw(XS PP JSON DWIW);
 
 TODO: { 
     local $TODO = q[JSON::Syck doesn't escape things properly];
