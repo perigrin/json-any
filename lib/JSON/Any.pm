@@ -377,6 +377,19 @@ WARNING: If you call JSON::Any with an empty list
 It will skip the JSON package detection routines and will die loudly that it
 couldn't find a package.
 
+=head1 WARNING
+
+JSON::XS 3.0 or higher has a conflict with any version of JSON.pm less than 2.90 
+when  you use JSON.pm's C<-support_by_pp> option, which JSON::Any enables by 
+default.
+
+This situation should only come up with JSON::Any if you have JSON.pm 2.61 or 
+lower and JSON::XS 3.0 or higher installed and you for JSON::Any to use JSON.pm 
+via C<use JSON::Any qw(JSON);> or the C<JSON_ANY_ORDER> environment variable.
+
+If you run into an issue where you're getting recursive inheritance errors in a 
+Types::Serialiser package, please try upgrading JSON.pm to 2.90 or higher.
+
 =head1 DEPRECATION
 
 The original need for JSON::Any has been solved (quite some time ago

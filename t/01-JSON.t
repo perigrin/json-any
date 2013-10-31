@@ -2,6 +2,8 @@
 $|++;
 use strict;
 use Test::More;
+use Test::Without::Module qw(JSON::XS);
+
 eval "use JSON::Any qw(JSON)";
 if ($@) {
     plan skip_all => "JSON.pm not installed: $@";
@@ -71,6 +73,7 @@ $js = JSON::Any->objToJson($obj);
 is($js,'{"foo":" "}');
 
 # testing the truth
+warn JSON::Any->true;
 $obj = { foo => JSON::Any->true };
 $js = JSON::Any->objToJson($obj);
 is($js,'{"foo":true}');
