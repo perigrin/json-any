@@ -14,9 +14,10 @@ override _build_WriteMakefile_dump => sub {
     $str .= <<'END_NONSENSE';
   
     sub has_json () {
-        our @order = qw(XS JSON DWIW);
+        our @order = qw(CPANEL XS PP JSON DWIW);
         foreach my $testmod (@order) {
             $testmod = "JSON::$testmod" unless $testmod eq "JSON";
+            $testmod = "Cpanel::JSON::XS" if $testmod eq "JSON::CPANEL";
             eval "require $testmod";
             return 1 unless $@;
         }
