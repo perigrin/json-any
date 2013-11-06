@@ -39,11 +39,11 @@ sub test {
             JSON::Any->new;
         };
 
-        diag("$backend: " . $@), skip("Backend $backend failed to load", 8) if $@;
+        note("$backend: " . $@), skip("Backend $backend failed to load", 8) if $@;
 
         $j and $j->handler or next;
 
-        diag "handler is " . ( ref( $j->handler ) || $j->handlerType );
+        note "handler is " . ( ref( $j->handler ) || $j->handlerType );
 
         for my $bool ( qw/true false/ ) {
             my $data = eval { JSON::Any->jsonToObj($bool) };

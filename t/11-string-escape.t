@@ -5,13 +5,7 @@ use Data::Dumper;
 use Test::More;
 
 use Storable;
-
-eval "use JSON::Any";
-
-if ($@) {
-    plan skip_all => "$@";
-    exit;
-}
+use Test::Requires qw(JSON::Any);
 
 $Data::Dumper::Indent = 0;
 $Data::Dumper::Terse  = 1;
@@ -33,11 +27,14 @@ my %one_way = (
     '"\/"' => '/',  # escaped solidus
 );
 
-test ($_) for qw(XS PP JSON DWIW);
+{
+    test('XS');
+}
 
-TODO: { 
-    local $TODO = q[JSON::Syck doesn't escape things properly];
-    test ($_) for qw(Syck);
+{
+    require Test::Without::Module;
+    Test::Without::Module->import('JSON::XS');
+    test ($_) for qw(PP JSON CPANEL DWIW);
 }
 
 sub test {
@@ -47,11 +44,11 @@ sub test {
         JSON::Any->new;
     };
 
-    diag "$backend: " . $@ and next if $@;
+    note "$backend: " . $@ and next if $@;
 
     $j and $j->handler or next;
 
-    diag "handler is " . ( ref( $j->handler ) || $j->handlerType );
+    note "handler is " . ( ref( $j->handler ) || $j->handlerType );
 
     plan 'no_plan' unless $ENV{JSON_ANY_RAN_TESTS};
     $ENV{JSON_ANY_RAN_TESTS} = 1;

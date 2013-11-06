@@ -4,29 +4,23 @@ use strict;
 use utf8;
 use Test::More;
 
-eval "use JSON::Any";
-
-if ($@) {
-    plan skip_all => "$@";
-    exit;
-}
+use Test::Requires 'JSON::Any';
 
 $ENV{JSON_ANY_CONFIG} = "utf8=1";
 
-foreach my $backend (qw(XS JSON DWIW Syck)) {
+sub run_tests_for {
+    my $backend = shift;
+    note "testing backend $backend";
     my $j = eval {
         JSON::Any->import($backend);
         JSON::Any->new;
     };
 
-    diag "$backend: " . $@ and next if $@;
+    note "$backend: " . $@ and next if $@;
 
-    $j and $j->handler or next;
+    $j and $j->handler or return;
 
-    diag "handler is " . ( ref( $j->handler ) || $j->handlerType );
-
-    plan 'no_plan' unless $ENV{JSON_ANY_RAN_TESTS};
-    $ENV{JSON_ANY_RAN_TESTS} = 1;
+    note "handler is " . ( ref( $j->handler ) || $j->handlerType );
 
     foreach my $text (qw(foo שלום)) {
 
@@ -72,5 +66,16 @@ foreach my $backend (qw(XS JSON DWIW Syck)) {
     }
 }
 
-plan skip_all => 'no JSON package with unicode support installed'
-  unless $ENV{JSON_ANY_RAN_TESTS};
+
+{
+    run_tests_for 'XS';
+}
+
+{ 
+    require Test::Without::Module;
+    Test::Without::Module->import('JSON::XS');
+    run_tests_for $_ for (qw(PP JSON CPANEL DWIW));
+}
+
+
+done_testing;
