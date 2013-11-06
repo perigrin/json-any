@@ -30,7 +30,7 @@ override _build_WriteMakefile_dump => sub {
     else {
 
         # we need to have a version of JSON, go with JSON.pm as a sane default
-        $WriteMakefileArgs{PREREQ_PM}{JSON} = '2.02';
+        $WriteMakefileArgs{PREREQ_PM}{JSON} = '2.90';
     }
     
   
